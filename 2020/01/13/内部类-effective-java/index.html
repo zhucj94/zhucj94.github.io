@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>about | 小居的blog</title>
+  <title>内部类-effective java(24.优先考虑静态内部类) | 小居的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="北漂的小居">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+  <meta name="description" content="非静态内部类 与其外部类之间的关系是在创建实例时建立的，并且之后不能被修改。 常用用法是定义一个Adapter，例如HashMap中的KeySet。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内部类-effective java(24.优先考虑静态内部类)">
+<meta property="og:url" content="http://yoursite.com/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/index.html">
 <meta property="og:site_name" content="小居的blog">
-<meta property="og:description" content="北漂的小居">
-<meta property="article:published_time" content="2020-01-11T06:43:06.000Z">
-<meta property="article:modified_time" content="2020-01-11T06:49:25.108Z">
+<meta property="og:description" content="非静态内部类 与其外部类之间的关系是在创建实例时建立的，并且之后不能被修改。 常用用法是定义一个Adapter，例如HashMap中的KeySet。">
+<meta property="article:published_time" content="2020-01-13T07:58:41.000Z">
+<meta property="article:modified_time" content="2020-01-13T08:04:34.066Z">
 <meta property="article:author" content="北漂的小居">
+<meta property="article:tag" content="effective java 3rd">
+<meta property="article:tag" content="读书笔记">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="小居的blog" type="application/atom+xml">
@@ -139,27 +141,40 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+            <article id="post-内部类-effective-java" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      内部类-effective java(24.优先考虑静态内部类)
     </h1>
   
 
         
-        <a href="/about/index.html" class="archive-article-date">
-  	<time datetime="2020-01-11T06:43:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-11</time>
+        <a href="/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/" class="archive-article-date">
+  	<time datetime="2020-01-13T07:58:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-13</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>北漂的小居</p>
+        <h2 id="非静态内部类"><a href="#非静态内部类" class="headerlink" title="非静态内部类"></a>非静态内部类</h2><ul>
+<li>与其外部类之间的关系是在创建实例时建立的，并且之后不能被修改。</li>
+<li>常用用法是定义一个Adapter，例如HashMap中的KeySet。<a id="more"></a>
+<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2></li>
+<li>公共的静态内部类常见的用途是作为公共帮助类，仅在与其外部类一起使用时才有用。</li>
+<li>私有的静态内部类常见用法是表示外部类的组件。例如HashMap中的Node表示key与value的关系，Node中的方法不需要访问Map，所以使用非静态成员类是浪费的。</li>
+<li><strong>如果你声明了一个不需要访问宿主实例的成员类，总是把static修饰符放在它的声明中，使它成为一个静态成员类，而不是非静态的成员类。</strong>如果忽略static，每个实例都会有一个隐藏的外部实例引用，存储这个引用是占用时间和空间的。</li>
+</ul>
+<h2 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h2><ul>
+<li>除了在声明的时候外，不能实例化它们。</li>
+</ul>
+<h2 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h2><ul>
+<li>可以在任何可以声明局部变量的地方声明。</li>
+</ul>
 
       
 
@@ -168,6 +183,21 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -218,7 +248,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/about/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -230,6 +260,16 @@
 </article>
 
   
+<nav id="article-nav">
+  
+  
+    <a href="/2020/01/11/%E5%86%85%E9%83%A8%E7%B1%BB-on-java-8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">内部类-on java 8(11.内部类)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -280,7 +320,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
