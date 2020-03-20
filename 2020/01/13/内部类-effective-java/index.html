@@ -6,16 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://zhucj94.github.io">
-  <title>内部类-effective java(24.优先考虑静态内部类) | 小ju的blog</title>
+  <title>内部类-effective java | 小ju的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="非静态内部类 不可能在没有宿主实例的情况下创建非静态成员类的实例。 与其外部类之间的关系是在创建实例时建立的，并且之后不能被修改。 常用用法是定义一个Adapter，例如HashMap中的KeySet。 可以调用宿主实例上的方法，或者使用限定的构造[JLS，15.8.4] 获得对宿主实例的引用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内部类-effective java(24.优先考虑静态内部类)">
+<meta property="og:title" content="内部类-effective java">
 <meta property="og:url" content="https://zhucj94.github.io/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/index.html">
 <meta property="og:site_name" content="小ju的blog">
 <meta property="og:description" content="非静态内部类 不可能在没有宿主实例的情况下创建非静态成员类的实例。 与其外部类之间的关系是在创建实例时建立的，并且之后不能被修改。 常用用法是定义一个Adapter，例如HashMap中的KeySet。 可以调用宿主实例上的方法，或者使用限定的构造[JLS，15.8.4] 获得对宿主实例的引用。">
 <meta property="article:published_time" content="2020-01-13T07:58:41.000Z">
-<meta property="article:modified_time" content="2020-03-17T09:35:36.756Z">
+<meta property="article:modified_time" content="2020-03-20T07:41:00.004Z">
 <meta property="article:author" content="北漂的小ju">
 <meta property="article:tag" content="effective java 3rd">
 <meta property="article:tag" content="读书笔记">
@@ -41,6 +41,17 @@
 
 <body>
   <div id="container" q-class="show:isCtnShow">
+    <a class="fork" href="https://github.com/zhucj94" target="_blank" rel="noopener"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_red_aa0000.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    <style>
+       .fork{
+          position:fixed;
+          z-index:999;
+          top:0;
+          right:.5em
+       }
+    </style>
+
+
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
@@ -154,7 +165,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      内部类-effective java(24.优先考虑静态内部类)
+      内部类-effective java
     </h1>
   
 
