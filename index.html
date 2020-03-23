@@ -174,7 +174,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="列表优于数组"><a href="#列表优于数组" class="headerlink" title="列表优于数组"></a>列表优于数组</h3><p>1.1. 数组是协变的(covariant)，<strong>即如果Child是Super的子类型，那么Child[]亦是Super[]的子类型。</strong><br>1.2. 泛型是不变的(invariant)，<strong>对于任意两种不同的类型Type1，Type2，List<Type1>既不是List<Type>的子类型也不是父类型。</strong></p>
+        <h3 id="不要使用原始类型"><a href="#不要使用原始类型" class="headerlink" title="不要使用原始类型"></a>不要使用原始类型</h3><ul>
+<li>一个类或接口，它的声明有一个或多个类型参数（type parameters ），统称为泛型类型（generic types）。没有任何类型参数的泛型类型称为原始类型（List是List &lt;T&gt;的原始类型）。它们的存在主要是为了与没有泛型之前的代码相兼容。</li>
+<li>使用原始类型是合法的，但如果你使用原始类型，则会丧失泛型的所有安全性和表达上的优势<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private final List stamps &#x3D; ... ; &#x2F;&#x2F;警告</span><br><span class="line">stamps.add(new Coin());&#x2F;&#x2F; 如果有泛型，此处无法编译</span><br><span class="line">(Stamp)stamps.get(0);&#x2F;&#x2F;编译通过，运行ClassCastException</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="列表优于数组"><a href="#列表优于数组" class="headerlink" title="列表优于数组"></a>列表优于数组</h3><p>1.1. 数组是协变的(covariant)，<strong>即如果Child是Super的子类型，那么Child[]亦是Super[]的子类型。</strong><br>1.2. 泛型是不变的(invariant)，<strong>对于任意两种不同的类型Type1，Type2，List<Type1>既不是List<Type>的子类型也不是父类型。</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;运行时会抛出ArrayStoreException</span><br><span class="line">Object[] objectArray &#x3D; new Long[1];</span><br><span class="line">objectArray[0] &#x3D; &quot;I don&#39;t fit in&quot;;</span><br><span class="line">&#x2F;&#x2F;无法编译</span><br><span class="line">List&lt;Object&gt; ol &#x3D; new ArrayList&lt;Long&gt;();</span><br></pre></td></tr></table></figure>
         
           <a class="article-more-a" href="/2020/03/19/%E6%B3%9B%E5%9E%8B-effective%20java/#more">more >></a>
@@ -588,19 +594,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">activiti</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
             
             <div class="clearfix"></div>
