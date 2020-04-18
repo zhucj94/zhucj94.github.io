@@ -6,19 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://zhucj94.github.io">
-  <title>异常 | 小朱的blog</title>
+  <title>读写分离下数据库与缓存的一致性 | 小朱的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对可恢复的情况使用受检异常，对编程错误使用运行时异常 如果期望调用者能够合理的恢复程序运行，对于这种情况就应该使用受检异常。 用运行时异常来表明编程错误，例如数组的下标值在0到长度-1之间，ArrayIndexOutOfBoundsException表明违反了这个前提。按照惯例，错误（Error）往往被JVM保留下来使用，你实现的所有非受检的 throwable 都应该是 RuntimeExcep">
+  <meta name="description" content="读操作 尝试从缓存get数据，结果没有命中。 从数据库获取数据，读从库。 把数据set到缓存，未来能够命中缓存。  写操作 delete缓存。 操作数据库。  为什么写操作先操作缓存，再操作数据库 如果操作数据成功，但是操作缓存失败，会导致数据库与缓存的不一致。  写操作为什么不更新缓存，而是删除？ 使用更新，1成功，2失败，会导致缓存里是更新后的数据，数据库里是之前的数据，数据不一致。 使用删除">
 <meta property="og:type" content="article">
-<meta property="og:title" content="异常">
-<meta property="og:url" content="https://zhucj94.github.io/2020/04/02/%E5%BC%82%E5%B8%B8/index.html">
+<meta property="og:title" content="读写分离下数据库与缓存的一致性">
+<meta property="og:url" content="https://zhucj94.github.io/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/index.html">
 <meta property="og:site_name" content="小朱的blog">
-<meta property="og:description" content="对可恢复的情况使用受检异常，对编程错误使用运行时异常 如果期望调用者能够合理的恢复程序运行，对于这种情况就应该使用受检异常。 用运行时异常来表明编程错误，例如数组的下标值在0到长度-1之间，ArrayIndexOutOfBoundsException表明违反了这个前提。按照惯例，错误（Error）往往被JVM保留下来使用，你实现的所有非受检的 throwable 都应该是 RuntimeExcep">
-<meta property="article:published_time" content="2020-04-02T06:22:14.000Z">
-<meta property="article:modified_time" content="2020-04-05T06:52:59.301Z">
+<meta property="og:description" content="读操作 尝试从缓存get数据，结果没有命中。 从数据库获取数据，读从库。 把数据set到缓存，未来能够命中缓存。  写操作 delete缓存。 操作数据库。  为什么写操作先操作缓存，再操作数据库 如果操作数据成功，但是操作缓存失败，会导致数据库与缓存的不一致。  写操作为什么不更新缓存，而是删除？ 使用更新，1成功，2失败，会导致缓存里是更新后的数据，数据库里是之前的数据，数据不一致。 使用删除">
+<meta property="article:published_time" content="2020-04-18T07:50:54.000Z">
+<meta property="article:modified_time" content="2020-04-18T13:19:33.396Z">
 <meta property="article:author" content="不知何时还乡的小朱">
-<meta property="article:tag" content="effective java 3rd">
-<meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="缓存">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="小朱的blog" type="application/atom+xml">
@@ -158,53 +157,50 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-异常" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-缓存与数据库一致性" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      异常
+      读写分离下数据库与缓存的一致性
     </h1>
   
 
         
-        <a href="/2020/04/02/%E5%BC%82%E5%B8%B8/" class="archive-article-date">
-  	<time datetime="2020-04-02T06:22:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-02</time>
+        <a href="/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" class="archive-article-date">
+  	<time datetime="2020-04-18T07:50:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-18</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="对可恢复的情况使用受检异常，对编程错误使用运行时异常"><a href="#对可恢复的情况使用受检异常，对编程错误使用运行时异常" class="headerlink" title="对可恢复的情况使用受检异常，对编程错误使用运行时异常"></a>对可恢复的情况使用受检异常，对编程错误使用运行时异常</h3><ul>
-<li>如果期望调用者能够合理的恢复程序运行，对于这种情况就应该使用受检异常。</li>
-<li>用运行时异常来表明编程错误，例如数组的下标值在0到长度-1之间，ArrayIndexOutOfBoundsException表明违反了这个前提。按照惯例，<strong><em>错误（Error）往往被JVM保留下来使用，你实现的所有非受检的 throwable 都应该是 RuntimeExceptiond 子类。</em></strong><a id="more"></a>
-
+        <h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3><ol>
+<li>尝试从缓存get数据，结果没有命中。</li>
+<li>从数据库获取数据，读从库。</li>
+<li>把数据set到缓存，未来能够命中缓存。</li>
+</ol>
+<h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><ol>
+<li>delete缓存。</li>
+<li>操作数据库。</li>
+</ol>
+<h3 id="为什么写操作先操作缓存，再操作数据库"><a href="#为什么写操作先操作缓存，再操作数据库" class="headerlink" title="为什么写操作先操作缓存，再操作数据库"></a>为什么写操作先操作缓存，再操作数据库</h3><ul>
+<li>如果操作数据成功，但是操作缓存失败，会导致数据库与缓存的不一致。</li>
+</ul>
+<h3 id="写操作为什么不更新缓存，而是删除？"><a href="#写操作为什么不更新缓存，而是删除？" class="headerlink" title="写操作为什么不更新缓存，而是删除？"></a>写操作为什么不更新缓存，而是删除？</h3><ul>
+<li>使用更新，1成功，2失败，会导致缓存里是更新后的数据，数据库里是之前的数据，数据不一致。</li>
+<li>使用删除，1成功，2失败，会导致缓存里没有数据，数据库里是之前的数据，数据没有不一致。只是下一次读取，会多一次cache miss。</li>
+</ul>
+<h3 id="写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？"><a href="#写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？" class="headerlink" title="写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？"></a>写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？</h3><ul>
+<li>方案一<ul>
+<li>通过工具（canal）订阅从库的binlog，从库执行完写操作后，再次删除缓存，淘汰可能写入缓存的旧数据。</li>
+</ul>
 </li>
-</ul>
-<h3 id="避免不必要的使用受检异常"><a href="#避免不必要的使用受检异常" class="headerlink" title="避免不必要的使用受检异常"></a>避免不必要的使用受检异常</h3><ul>
-<li>在谨慎使用的前提之下，受检异常可以提升程序的可读性；过分使用受检异常使api不方便，api必须位于try块中或者方法向上抛出异常。</li>
-<li>可以使用下面两种方式部分替代受检异常。<ul>
-<li>返回一个Optional，方法不抛出异常，只是返回一个空Optional，缺点是方法无法返回额外信息，而异常可以。</li>
-<li>将受检异常变为非受检异常，把这个抛出异常的方法分成两个方法，其中第一个方法返回一个boolean值，表明是否应该抛出异常，第二个方法正常执行，抛出非受检异常。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    obj.action( args );</span><br><span class="line">&#125; catch ( TheCheckedException e ) &#123;</span><br><span class="line">... &#x2F;* Handle exceptional condition *&#x2F;</span><br><span class="line">&#125;</span><br><span class="line">重构为下面</span><br><span class="line">if ( obj.actionPermitted( args ) ) &#123;</span><br><span class="line">    obj.action( args );</span><br><span class="line">&#125; else &#123;</span><br><span class="line">... &#x2F;* Handle exceptional condition *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-这种重构并非总是恰当的，如果对象将在缺少外部同步的情况下被并发访问，或者可被外界改变状态，这种重构就是不恰当的，因为在actionPermitted和action这两个调用的时间间隔之中，对象的状态有可能会发生变化。如果单独的actionPermitted方法必须重复action方法的工作，出于性能的考虑，这种API重构就不值得去做。</li>
-</ul>
-</li>
-</ul>
-<h3 id="抛出与抽象对应的异常"><a href="#抛出与抽象对应的异常" class="headerlink" title="抛出与抽象对应的异常"></a>抛出与抽象对应的异常</h3><ul>
-<li>如果方法抛出的异常与它所执行的任务没有明显的联系，这种情形将会使人不知所措。当方法传递由低层抛出的异常时，往往会发生这种情况，为了避免这个问题，更高层的实现应该<strong><em>捕获低层的异常，同时抛出可以按照高层抽象进行解释的异常。这种做法称为异常转译(exception translation)</em></strong>，例如AbstractSequentialList.get(index)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        return listIterator(index).next();</span><br><span class="line">    &#125; catch (NoSuchElementException exc) &#123;</span><br><span class="line">        throw new IndexOutOfBoundsException(&quot;Index: &quot;+index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><strong><em>尽管异常转译与不加选择地从低层传递异常的做法相比有所改进，但是也不能滥用它。</em></strong>处理来自低层异常的最好做法是在调用低层方法之前确保它们会成功执行，从而避免它们抛出异常，例如给低层传递参数之前，检查更高层方法的参数的有效性。其次的做法是，让更高层来悄悄地处理这些异常，从而将高层方法的调用者与低层的问题隔离开来，例如日志打印。</li>
-</ul>
-<h3 id="保证失败原子性"><a href="#保证失败原子性" class="headerlink" title="保证失败原子性"></a>保证失败原子性</h3><ul>
-<li>一般而言，<strong><em>失败的方法调用应该使对象保持在被调用之前的状态。</em></strong>具有这种属性的方法被称为具有失败原子性 (failure atomic)。</li>
-<li>有5中方法保持失败原子性<ul>
-<li>使用不可变对象。</li>
-<li>在执行操作之前检查参数的有效性，例如Arraylist.get(index)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;</span><br><span class="line">  rangeCheck(index);</span><br><span class="line">  return elementData(index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void rangeCheck(int index) &#123;</span><br><span class="line">  if (index &gt;&#x3D; size)</span><br><span class="line">      throw new IndexOutOfBoundsException(outOfBoundsMsg(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>调整计算处理过程的顺序，使得任何可能会失败的计算部分都在对象状态被修改之前发生。</li>
-<li>在对象的一份临时拷贝上执行操作，当操作完成之后再用临时拷贝中的结果代替对象的内容。</li>
-<li>编写一段恢复代码 (recoverycode)，由它来拦截操作过程中发生的失败，以及便对象回滚到操作开始之前的状态上。</li>
+<li>方案二<ul>
+<li>写操作后，将哪个库，哪个表，哪个主键三个信息拼装一个key写到cache里，这条记录的超时时间，设置为“主从同步所需时间”。</li>
+<li>读操作第二步改为拼装key去缓存中查找，如果命中则强制读主库，否则读从库。</li>
 </ul>
 </li>
 </ul>
@@ -219,7 +215,7 @@
     
     <br>
     <strong>本文链接：</strong>
-    https://zhucj94.github.io/2020/04/02/%E5%BC%82%E5%B8%B8/
+    https://zhucj94.github.io/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/
     <br>
     <strong>版权声明：</strong>
     本作品采用
@@ -242,11 +238,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
         		</li>
       		
 		</ul>
@@ -302,7 +294,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://zhucj94.github.io/2020/04/02/%E5%BC%82%E5%B8%B8/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://zhucj94.github.io/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -316,18 +308,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          读写分离下数据库与缓存的一致性
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/03/30/%E6%96%B9%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">方法</div>
+    <a href="/2020/04/02/%E5%BC%82%E5%B8%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">异常</div>
       <i class="icon-circle-right"></i>
     </a>
   
