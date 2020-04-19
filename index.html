@@ -177,11 +177,11 @@
         <h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3><ol>
 <li>尝试从缓存get数据，结果没有命中。</li>
 <li>从数据库获取数据，读从库。</li>
-<li>把数据set到缓存，未来能够命中缓存。</li>
+<li>把数据set到缓存，未来能够命中缓存。<br><img src="/images/read.png" alt="avatar"></li>
 </ol>
 <h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><ol>
 <li>delete缓存。</li>
-<li>操作数据库。</li>
+<li>操作数据库。<br><img src="/images/write.png" alt="avatar"></li>
 </ol>
 <h3 id="为什么写操作先操作缓存，再操作数据库"><a href="#为什么写操作先操作缓存，再操作数据库" class="headerlink" title="为什么写操作先操作缓存，再操作数据库"></a>为什么写操作先操作缓存，再操作数据库</h3><ul>
 <li>如果操作数据成功，但是操作缓存失败，会导致数据库与缓存的不一致。</li>
@@ -190,7 +190,7 @@
 <li>使用更新，1成功，2失败，会导致缓存里是更新后的数据，数据库里是之前的数据，数据不一致。</li>
 <li>使用删除，1成功，2失败，会导致缓存里没有数据，数据库里是之前的数据，数据没有不一致。只是下一次读取，会多一次cache miss。</li>
 </ul>
-<h3 id="写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？"><a href="#写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？" class="headerlink" title="写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？"></a>写操作完成后，数据库主从同步未完成，此时读操作写入缓存，怎么办？</h3><ul>
+<h3 id="写操作完成后，数据库主从同步未完成-主库是新数据-从库是旧数据-，此时读操作将旧数据写入缓存，怎么办？"><a href="#写操作完成后，数据库主从同步未完成-主库是新数据-从库是旧数据-，此时读操作将旧数据写入缓存，怎么办？" class="headerlink" title="写操作完成后，数据库主从同步未完成(主库是新数据,从库是旧数据)，此时读操作将旧数据写入缓存，怎么办？"></a>写操作完成后，数据库主从同步未完成(主库是新数据,从库是旧数据)，此时读操作将旧数据写入缓存，怎么办？</h3><ul>
 <li>方案一<ul>
 <li>通过工具（canal）订阅从库的binlog，从库执行完写操作后，再次删除缓存，淘汰可能写入缓存的旧数据。</li>
 </ul>
@@ -1040,19 +1040,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">activiti</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
