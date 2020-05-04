@@ -6,21 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://zhucj94.github.io">
-  <title>并发更新缓存遇到的问题 | 小朱的blog</title>
+  <title>Oauth2.0 | 小朱的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="业务场景 调用第三方oauth 2.0服务（like微信），会分配access_token，通过access_token来换取资源。 access_token是有时限的，这时就需要刷新或重新获取token。  出问题的方式 从缓存获取access_token。 未获取到，请求oauth服务，获取access_token，并设置过期时间。 将access_token放入缓存。  并发时  a获取ac">
+  <meta name="description" content="Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。 令牌与密码的差异 令牌是短期的，到期后会失效，密码一般是长期的，用户不主动修改，不会改变。 令牌可被颁发者主动撤销，而密码一般不可由他人控制。 令牌的权限范围一般比密码小。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发更新缓存遇到的问题">
-<meta property="og:url" content="https://zhucj94.github.io/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="Oauth2.0">
+<meta property="og:url" content="https://zhucj94.github.io/2020/04/30/Oauth2-0/index.html">
 <meta property="og:site_name" content="小朱的blog">
-<meta property="og:description" content="业务场景 调用第三方oauth 2.0服务（like微信），会分配access_token，通过access_token来换取资源。 access_token是有时限的，这时就需要刷新或重新获取token。  出问题的方式 从缓存获取access_token。 未获取到，请求oauth服务，获取access_token，并设置过期时间。 将access_token放入缓存。  并发时  a获取ac">
-<meta property="og:image" content="https://zhucj94.github.io/images/cache/acc_token.png">
-<meta property="article:published_time" content="2020-04-19T13:00:22.000Z">
-<meta property="article:modified_time" content="2020-04-19T14:06:47.125Z">
+<meta property="og:description" content="Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。 令牌与密码的差异 令牌是短期的，到期后会失效，密码一般是长期的，用户不主动修改，不会改变。 令牌可被颁发者主动撤销，而密码一般不可由他人控制。 令牌的权限范围一般比密码小。">
+<meta property="article:published_time" content="2020-04-30T08:48:37.000Z">
+<meta property="article:modified_time" content="2020-05-04T08:10:59.918Z">
 <meta property="article:author" content="想家的小朱">
-<meta property="article:tag" content="缓存">
+<meta property="article:tag" content="Oauth2.0">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zhucj94.github.io/images/cache/acc_token.png">
   
     <link rel="alternative" href="/atom.xml" title="小朱的blog" type="application/atom+xml">
   
@@ -159,48 +157,81 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-并发更新缓存遇到的问题" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Oauth2-0" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      并发更新缓存遇到的问题
+      Oauth2.0
     </h1>
   
 
         
-        <a href="/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-04-19T13:00:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-19</time>
+        <a href="/2020/04/30/Oauth2-0/" class="archive-article-date">
+  	<time datetime="2020-04-30T08:48:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-30</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h3><ol>
-<li>调用第三方oauth 2.0服务（like微信），会分配access_token，通过access_token来换取资源。</li>
-<li>access_token是有时限的，这时就需要刷新或重新获取token。</li>
-</ol>
-<h3 id="出问题的方式"><a href="#出问题的方式" class="headerlink" title="出问题的方式"></a>出问题的方式</h3><ol>
-<li>从缓存获取access_token。</li>
-<li>未获取到，请求oauth服务，获取access_token，并设置过期时间。</li>
-<li>将access_token放入缓存。<br><img src="/images/cache/acc_token.png" alt="avatar"></li>
-</ol>
-<p>并发时</p>
-<ol>
-<li>a获取access_token，未获取到。</li>
-<li>b获取access_token，未获取到。</li>
-<li>a申请access_token1。</li>
-<li>b申请access_token2。</li>
-<li>a将access_token1放入缓存，并请求资源，发现过期，重新申请access_token3。</li>
-<li>b将access_token2放入缓存，并请求资源，发现过期，重新申请access_token4。<br>…2000 years later ~…</li>
-</ol>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
-<li>server只读取access_token。</li>
-<li>更新access_token由异步线程执行。</li>
+        <p>Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。</p>
+<h3 id="令牌与密码的差异"><a href="#令牌与密码的差异" class="headerlink" title="令牌与密码的差异"></a>令牌与密码的差异</h3><ul>
+<li>令牌是短期的，<strong>到期后会失效</strong>，密码一般是长期的，用户不主动修改，不会改变。</li>
+<li>令牌可被颁发者主动撤销，而密码一般不可由他人控制。</li>
+<li>令牌的权限范围一般比密码小。</li>
 </ul>
+<a id="more"></a>
+
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>Third-party application：第三方应用程序，例如微信网站应用。</li>
+<li>HTTP service：HTTP服务提供商，例如微信。</li>
+<li>Resource Owner：资源所有者，例如微信用户。</li>
+<li>User Agent：用户代理，浏览器。</li>
+<li>Authorization server：认证服务器，即服务提供商专门用来处理认证的服务器。</li>
+<li>Resource server：资源服务器，即服务提供商存放用户生成的资源的服务器。它与认证服务器，可以是同一台服务器，也可以是不同的服务器。</li>
+</ul>
+<h3 id="4种授权方式"><a href="#4种授权方式" class="headerlink" title="4种授权方式"></a>4种授权方式</h3><ul>
+<li><p>授权码模式（authorization code）</p>
+<p>最安全的一种方式，适用于有后端的web应用</p>
+<ol>
+<li>资源所有者访问第三方应用，后者将前者导向认证服务器。</li>
+<li>资源所有者选择是否给予第三方应用授权。</li>
+<li>假设资源所有者给予授权，认证服务器将资源所有者导向第三方应用事先指定的”重定向URI”，同时附上一个授权码。</li>
+<li>第三方应用收到授权码，向认证服务器申请令牌。这一步是在第三方应用的后台的服务器上完成的，对资源所有者不可见。</li>
+<li>认证服务器核对了授权码和重定向URI，确认无误后，向第三方应用发送访问令牌（access token）和更新令牌（refresh token）。</li>
+</ol>
+</li>
+<li><p>隐藏（简化）模式（implicit）</p>
+<p>适用于纯前端应用</p>
+<ol>
+<li>客户端将用户导向认证服务器。</li>
+<li>用户决定是否给于客户端授权。</li>
+<li>假设用户给予授权，认证服务器将用户导向客户端指定的”重定向URI”，并带上访问令牌，token的位置是url锚点</li>
+</ol>
+</li>
+<li><p>密码模式（resource owner password credentials）</p>
+<p>适用于高度信任的应用</p>
+<ol>
+<li>资源拥有者向第三方应用提供用户名和密码。</li>
+<li>第三方应用将用户名和密码发给认证服务器，向后者请求令牌。</li>
+<li>认证服务器确认无误后，向客户端提供访问令牌。</li>
+</ol>
+</li>
+<li><p>客户端模式（client credentials）</p>
+<p>适用于没有前端的应用</p>
+<ol>
+<li>第三方应用向认证服务器进行身份认证，并要求一个访问令牌。</li>
+<li>认证服务器确认无误后，直接返回访问令牌。</li>
+</ol>
+</li>
+</ul>
+<p>本文由阮一峰3篇oauth2.0文章总结而来。</p>
+<p><a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2019/04/oauth_design.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/04/oauth_design.html</a></p>
 
       
 
@@ -212,7 +243,7 @@
     
     <br>
     <strong>本文链接：</strong>
-    https://zhucj94.github.io/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/
+    https://zhucj94.github.io/2020/04/30/Oauth2-0/
     <br>
     <strong>版权声明：</strong>
     本作品采用
@@ -235,7 +266,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Oauth2.0</a>
         		</li>
       		
 		</ul>
@@ -291,7 +322,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://zhucj94.github.io/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://zhucj94.github.io/2020/04/30/Oauth2-0/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -423,6 +454,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">activiti</a>

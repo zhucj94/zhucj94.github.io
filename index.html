@@ -154,49 +154,35 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-并发更新缓存遇到的问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Oauth2-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">并发更新缓存遇到的问题</a>
+      <a class="article-title" href="/2020/04/30/Oauth2-0/">Oauth2.0</a>
     </h1>
   
 
         
-        <a href="/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" class="archive-article-date">
-  	<time datetime="2020-04-19T13:00:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-19</time>
+        <a href="/2020/04/30/Oauth2-0/" class="archive-article-date">
+  	<time datetime="2020-04-30T08:48:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-30</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="业务场景"><a href="#业务场景" class="headerlink" title="业务场景"></a>业务场景</h3><ol>
-<li>调用第三方oauth 2.0服务（like微信），会分配access_token，通过access_token来换取资源。</li>
-<li>access_token是有时限的，这时就需要刷新或重新获取token。</li>
-</ol>
-<h3 id="出问题的方式"><a href="#出问题的方式" class="headerlink" title="出问题的方式"></a>出问题的方式</h3><ol>
-<li>从缓存获取access_token。</li>
-<li>未获取到，请求oauth服务，获取access_token，并设置过期时间。</li>
-<li>将access_token放入缓存。<br><img src="/images/cache/acc_token.png" alt="avatar"></li>
-</ol>
-<p>并发时</p>
-<ol>
-<li>a获取access_token，未获取到。</li>
-<li>b获取access_token，未获取到。</li>
-<li>a申请access_token1。</li>
-<li>b申请access_token2。</li>
-<li>a将access_token1放入缓存，并请求资源，发现过期，重新申请access_token3。</li>
-<li>b将access_token2放入缓存，并请求资源，发现过期，重新申请access_token4。<br>…2000 years later ~…</li>
-</ol>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ul>
-<li>server只读取access_token。</li>
-<li>更新access_token由异步线程执行。</li>
+        <p>Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。</p>
+<h3 id="令牌与密码的差异"><a href="#令牌与密码的差异" class="headerlink" title="令牌与密码的差异"></a>令牌与密码的差异</h3><ul>
+<li>令牌是短期的，<strong>到期后会失效</strong>，密码一般是长期的，用户不主动修改，不会改变。</li>
+<li>令牌可被颁发者主动撤销，而密码一般不可由他人控制。</li>
+<li>令牌的权限范围一般比密码小。</li>
 </ul>
-
+        
+          <a class="article-more-a" href="/2020/04/30/Oauth2-0/#more">more >></a>
+        
       
 
 
@@ -213,7 +199,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Oauth2.0</a>
         		</li>
       		
 		</ul>
@@ -223,7 +209,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/19/%E5%B9%B6%E5%8F%91%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/04/30/Oauth2-0/">展开全文 >></a>
         </p>
       
 
@@ -1137,6 +1123,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">activiti</a>
