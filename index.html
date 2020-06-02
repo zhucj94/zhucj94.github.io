@@ -154,6 +154,111 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-InnoDB之缓冲池-buffer-pool" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">InnoDB之缓冲池(buffer pool)</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" class="archive-article-date">
+  	<time datetime="2020-06-01T14:20:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>MySQL作为一个存储系统，具有 <strong><em>buffer pool</em></strong> 机制，以避免每次查询都进行磁盘IO。</p>
+<h3 id="缓存什么"><a href="#缓存什么" class="headerlink" title="缓存什么"></a>缓存什么</h3><p>缓存表数据与索引数据</p>
+<h3 id="预读（read-ahead）"><a href="#预读（read-ahead）" class="headerlink" title="预读（read-ahead）"></a>预读（read-ahead）</h3><ul>
+<li>page是InnoDB存储引擎的最小磁盘单位，一次至少读取一个page，extent是由连续的page组成的空间。</li>
+<li>如果一个extent中被顺序读取的page超过或者等于innodb_read_ahead_threshold时，InnoDB将会异步的将下一个extent读取到buffer pool中（以linear read-ahead概述，random read-ahead在5.5后被废弃）。</li>
+<li>预读的依据是<strong>局部性原理</strong> : CPU访问存储器时，无论是存取指令还是存取数据，所访问的存储单元都趋于聚集在一个较小的连续区域中。</li>
+</ul>
+<h3 id="淘汰算法"><a href="#淘汰算法" class="headerlink" title="淘汰算法"></a>淘汰算法</h3><p>采用改进版的LRU算法，传统的LRU算法会遇到两个问题</p>
+<ul>
+<li><p>预读失败<br>由于预读，提前将page放入缓冲池，但最终没有从页中读取数据。<br>改进：</p>
+<ul>
+<li>将LRU分为新生代（new sublist），老生代（old sublist）。</li>
+<li>新老生代首尾相连。 </li>
+<li>新页加入缓冲池时，只加入老生代头部，如果数据被真正读取到，才会加入新生代头部，如果没有被读取，则会比新生代里的数据更早被淘汰</li>
+</ul>
+</li>
+<li><p>缓冲池污染<br>当执行某个SQL时，要批量扫描大量数据（例如未命中索引，而全表扫描），导致大量热数据被淘汰。<br>改进：</p>
+<ul>
+<li>插入老生代头部的页，即使立刻被访问，也不会放入新生代头部。</li>
+<li>只有满足 <strong><em>被访问</em></strong> 且 <strong><em>在老生代停留时间大于T</em></strong>，才会被放入新生代头部。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/InnoDB/newlru.png" alt="avatar"></p>
+<h3 id="相关参数"><a href="#相关参数" class="headerlink" title="相关参数"></a>相关参数</h3><ul>
+<li>innodb_buffer_pool_size<br>缓冲池的大小</li>
+<li>innodb_old_blocks_pct<br>老生代占整个LRU链长度的比例，默认是37</li>
+</ul>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Oauth2-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -952,94 +1057,10 @@
 
 
   
-    <article id="post-内部类-effective-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/">内部类-effective java</a>
-    </h1>
-  
-
-        
-        <a href="/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/" class="archive-article-date">
-  	<time datetime="2020-01-13T07:58:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="非静态内部类"><a href="#非静态内部类" class="headerlink" title="非静态内部类"></a>非静态内部类</h3><ul>
-<li>不可能在没有宿主实例的情况下创建非静态成员类的实例。</li>
-<li>与其外部类之间的关系是在创建实例时建立的，并且之后不能被修改。</li>
-<li>常用用法是定义一个Adapter，例如HashMap中的KeySet。</li>
-<li>可以调用宿主实例上的方法，或者使用限定的构造[JLS，15.8.4] 获得对宿主实例的引用。
-        
-          <a class="article-more-a" href="/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/01/13/%E5%86%85%E9%83%A8%E7%B1%BB-effective-java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    </nav>
   
 
 
@@ -1125,6 +1146,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
@@ -1134,14 +1167,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
