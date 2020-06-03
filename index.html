@@ -219,7 +219,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
         		</li>
       		
 		</ul>
@@ -230,6 +230,136 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/02/%E4%BA%8B%E5%8A%A1/">事务</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/02/%E4%BA%8B%E5%8A%A1/" class="archive-article-date">
+  	<time datetime="2020-05-02T12:52:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h3><ul>
+<li>原子性(Atomicity)<br>事务是一个原子操作，其对数据的修改，要么全执行，要么全不执行。</li>
+<li>一致性(Consistency)<br>事务执行结束后，数据库的完整性约束没有被破坏，事务执行的前后都是合法的数据状态。数据库的完整性约束包括但不限于：实体完整性（如行的主键存在且唯一）、列完整性（如字段的类型、大小、长度要符合要求）、外键约束、用户自定义完整性（如转账前后，两个账户余额的和应该不变）。</li>
+<li>隔离性(Isolation)<br>事务内部的操作与其他事务是隔离的，并发执行的各个事务之间不能互相干扰。</li>
+<li>持久性(Durability)<br>事务完成后，它对于数据的修改是永久性的，其后的其他操作或故障都不应该造成影响。</li>
+</ul>
+<h3 id="并发事务造成的影响"><a href="#并发事务造成的影响" class="headerlink" title="并发事务造成的影响"></a>并发事务造成的影响</h3><ul>
+<li><p>脏读(Dirty Reads)<br>事务A读取到了事务B未提交的已修改数据，并操作了这些数据，此时事务B回滚，A依据脏数据做的操作可能不正确，不符合一致性。（例如，b=3，B事务将b改为4未提交，A事务读取到了，执行a=b+5，此时B回滚）</p>
+</li>
+<li><p>不可重复读(Non-Repeatable Reads)<br>事务A读取到了事务B已提交的修改数据（update，delete），不符合隔离性。</p>
+</li>
+<li><p>幻读(Phantom Reads)<br>事务A读取到了事务B已提交的新增数据，不符合隔离性。</p>
+</li>
+</ul>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><table>
+<thead>
+<tr>
+<th align="center">隔离级别</th>
+<th align="center">读数据一致性</th>
+<th align="center">脏读</th>
+<th align="center">不可重复读</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">读未提交(Read uncommitted)</td>
+<td align="center">最低级别，只能保证不读取物理上损坏的数据</td>
+<td align="center">√</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">读已提交(Read committed)</td>
+<td align="center">语句级</td>
+<td align="center">×</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">可重复读(Repeatable read)</td>
+<td align="center">事务级</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">可序列化(Serializable)</td>
+<td align="center">事务级</td>
+<td align="center">√</td>
+<td align="center">√</td>
+<td align="center">√</td>
+</tr>
+</tbody></table>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/02/%E4%BA%8B%E5%8A%A1/">展开全文 >></a>
         </p>
       
 
@@ -969,94 +1099,6 @@
 
 
   
-    <article id="post-activiti" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/15/activiti/">activiti</a>
-    </h1>
-  
-
-        
-        <a href="/2020/01/15/activiti/" class="archive-article-date">
-  	<time datetime="2020-01-15T09:43:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="与SpringBoot整合"><a href="#与SpringBoot整合" class="headerlink" title="与SpringBoot整合"></a>与SpringBoot整合</h3><ul>
-<li>yml中加入如下配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  activiti:</span><br><span class="line">    check-process-definitions: true #自动检查、部署流程定义文件</span><br><span class="line">    database-schema-update: true #自动更新数据库结构</span><br><span class="line">    process-definition-location-prefix: classpath:&#x2F;processes&#x2F; #流程定义文件存放目录</span><br><span class="line">    db-history-used: true #启用历史,默认为false,不启用将不会创建历史表</span><br><span class="line">    history-level: full #历史级别</span><br></pre></td></tr></table></figure></li>
-<li>在resource下创建processes文件加，与process-definition-location-prefix对应</li>
-<li>某些版本，启动类需要排除SecurityAutoConfiguration<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication(exclude &#x3D; SecurityAutoConfiguration.class)</span><br></pre></td></tr></table></figure></li>
-<li>启动项目后会直接在数据创建25张表，并且自动部署bpmn
-        
-          <a class="article-more-a" href="/2020/01/15/activiti/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">activiti</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工作</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/01/15/activiti/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1146,15 +1188,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
