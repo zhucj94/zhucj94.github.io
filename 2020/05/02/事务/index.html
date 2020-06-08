@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="小朱的blog">
 <meta property="og:description" content="ACID 原子性(Atomicity)事务是一个原子操作，其对数据的修改，要么全执行，要么全不执行。 一致性(Consistency)事务执行结束后，数据库的完整性约束没有被破坏，事务执行的前后都是合法的数据状态。数据库的完整性约束包括但不限于：实体完整性（如行的主键存在且唯一）、列完整性（如字段的类型、大小、长度要符合要求）、外键约束、用户自定义完整性（如转账前后，两个账户余额的和应该不变）。">
 <meta property="article:published_time" content="2020-05-02T12:52:14.000Z">
-<meta property="article:modified_time" content="2020-06-03T14:30:46.856Z">
+<meta property="article:modified_time" content="2020-06-07T07:40:02.210Z">
 <meta property="article:author" content="想家的小朱">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -225,11 +225,13 @@
 <tr>
 <td align="center">可序列化(Serializable)</td>
 <td align="center">事务级</td>
-<td align="center">√</td>
-<td align="center">√</td>
-<td align="center">√</td>
+<td align="center">×</td>
+<td align="center">×</td>
+<td align="center">×</td>
 </tr>
 </tbody></table>
+<p>注：上表只是通常情况，<strong>InnoDB Repeatable read，通过MVCC解决普通读的幻读，通过间隙锁(Gap Locks)，临键锁(Next-Key Locks)解决 *</strong>当前读<strong>* 幻影读问题</strong></p>
+<h3 id="自动提交"><a href="#自动提交" class="headerlink" title="自动提交"></a>自动提交</h3><p>MySQL默认采用自动提交模式。即如果不是显示地开始一个事务，则每个查询都被当做一个事务执行提交操作。</p>
 
       
 
@@ -334,11 +336,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          InnoDB之缓冲池(buffer pool)
+          InnoDB之锁（1）自增锁（AUTO-INC Locks）
         
       </div>
     </a>
@@ -467,15 +469,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">
