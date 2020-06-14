@@ -1,5 +1,5 @@
 ---
-title: InnoDB之锁（1）自增锁（AUTO-INC Locks）
+title: InnoDB的锁（1）自增锁（AUTO-INC Locks）
 date: 2020-05-05 21:27:21
 tags: MySQL
 declare: true
@@ -34,6 +34,10 @@ Another type of “mixed-mode insert” is INSERT ... ON DUPLICATE KEY UPDATE, w
     + 对于所有的‘INSERT-like’语句不加锁
     + 对于Bulk inserts，AUTO_INCREMENT可能不连续
     + binlog为SBR模式时，数据复制或恢复不安全
+
+
+MySQL 5.6 锁文档
+https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks
 
 
 
