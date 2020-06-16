@@ -6,16 +6,16 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://zhucj94.github.io">
-  <title>InnoDB之锁（1）自增锁（AUTO-INC Locks） | 小朱的blog</title>
+  <title>InnoDB的锁（1）自增锁（AUTO-INC Locks） | 小朱的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。 insert分类 Simple insertsStatements for which the number of rows to be inserted can be determined in advance (when the statement is initially">
+  <meta name="description" content="本文不介绍MySQL的读表锁（LOCK TABLE table_name READ）和写表锁（LOCK TABLE table_name WRITE 自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。 insert分类 Simple insertsStatements for which the number of rows to">
 <meta property="og:type" content="article">
-<meta property="og:title" content="InnoDB之锁（1）自增锁（AUTO-INC Locks）">
-<meta property="og:url" content="https://zhucj94.github.io/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:title" content="InnoDB的锁（1）自增锁（AUTO-INC Locks）">
+<meta property="og:url" content="https://zhucj94.github.io/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="小朱的blog">
-<meta property="og:description" content="自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。 insert分类 Simple insertsStatements for which the number of rows to be inserted can be determined in advance (when the statement is initially">
-<meta property="article:published_time" content="2020-05-05T13:27:21.000Z">
-<meta property="article:modified_time" content="2020-06-08T09:02:33.470Z">
+<meta property="og:description" content="本文不介绍MySQL的读表锁（LOCK TABLE table_name READ）和写表锁（LOCK TABLE table_name WRITE 自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。 insert分类 Simple insertsStatements for which the number of rows to">
+<meta property="article:published_time" content="2020-05-10T13:27:21.000Z">
+<meta property="article:modified_time" content="2020-06-16T13:53:18.225Z">
 <meta property="article:author" content="想家的小朱">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -157,27 +157,28 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-InnoDB之锁（1）" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-InnoDB的锁（1）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      InnoDB之锁（1）自增锁（AUTO-INC Locks）
+      InnoDB的锁（1）自增锁（AUTO-INC Locks）
     </h1>
   
 
         
-        <a href="/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-05-05T13:27:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-05</time>
+        <a href="/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-05-10T13:27:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。</p>
+        <p><strong>本文不介绍MySQL的读表锁（LOCK TABLE table_name READ）和写表锁（LOCK TABLE table_name WRITE</strong></p>
+<p>自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。</p>
 <h3 id="insert分类"><a href="#insert分类" class="headerlink" title="insert分类"></a>insert分类</h3><ul>
 <li><p>Simple inserts<br>Statements for which the number of rows to be inserted can be determined in advance (when the statement is initially processed). This includes single-row and multiple-row INSERT and REPLACE statements that do not have a nested subquery, but not INSERT … ON DUPLICATE KEY UPDATE.</p>
 </li>
@@ -210,6 +211,7 @@
 </ul>
 </li>
 </ul>
+<p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks</a></p>
 
       
 
@@ -221,7 +223,7 @@
     
     <br>
     <strong>本文链接：</strong>
-    https://zhucj94.github.io/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/
+    https://zhucj94.github.io/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/
     <br>
     <strong>版权声明：</strong>
     本作品采用
@@ -300,7 +302,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://zhucj94.github.io/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://zhucj94.github.io/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -314,18 +316,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/05/12/InnoDB%E7%9A%84%E9%94%81%EF%BC%882%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          InnoDB之缓冲池(buffer pool)
+          InnoDB的锁（2）
         
       </div>
     </a>
   
   
-    <a href="/2020/05/02/%E4%BA%8B%E5%8A%A1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">事务</div>
+    <a href="/2020/05/05/InnoDB%E7%9A%84MVCC/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">InnoDB的MVCC（Multi Versioning Concurrency Control）</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -447,15 +449,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">

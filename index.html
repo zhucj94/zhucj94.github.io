@@ -154,19 +154,19 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-InnoDB之缓冲池-buffer-pool" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-InnoDB的缓冲池-buffer-pool" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">InnoDB之缓冲池(buffer pool)</a>
+      <a class="article-title" href="/2020/06/01/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">InnoDB之缓冲池(buffer pool)</a>
     </h1>
   
 
         
-        <a href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" class="archive-article-date">
+        <a href="/2020/06/01/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" class="archive-article-date">
   	<time datetime="2020-06-01T14:20:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
 </a>
         
@@ -229,7 +229,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/01/InnoDB%E4%B9%8B%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/06/01/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">展开全文 >></a>
         </p>
       
 
@@ -259,27 +259,402 @@
 
 
   
-    <article id="post-InnoDB之锁（1）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-InnoDB的锁（3x）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/">InnoDB之锁（1）自增锁（AUTO-INC Locks）</a>
+      <a class="article-title" href="/2020/05/16/InnoDB%E7%9A%84%E9%94%81%EF%BC%883x%EF%BC%89/">InnoDB的锁（3x）</a>
     </h1>
   
 
         
-        <a href="/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-05-05T13:27:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-05</time>
+        <a href="/2020/05/16/InnoDB%E7%9A%84%E9%94%81%EF%BC%883x%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-05-16T08:15:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。</p>
+        <h3 id="行锁策略"><a href="#行锁策略" class="headerlink" title="行锁策略"></a>行锁策略</h3><ol>
+<li>加锁的基本单位是临键锁。（记录锁+间隙锁，左开右闭区间）</li>
+<li>查找到数据才会加记录锁。</li>
+<li>唯一索引上的等值查询（命中），间隙锁退化为记录锁。</li>
+<li>辅助索引上的等值查询（命中），会在右侧相邻间隙加上间隙锁。</li>
+<li>唯一索引上的范围查询（等值条件命中，例如&lt;=的等于命中）,会在右侧相邻间隙加上临键锁。</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks</a></p>
+<p><a href="https://blog.guitar-coder.cn/MySql%E9%94%81-%E9%97%B4%E9%9A%99%E9%94%81%E5%92%8C%E4%B8%B4%E9%94%AE%E9%94%81.html" target="_blank" rel="noopener">https://blog.guitar-coder.cn/MySql%E9%94%81-%E9%97%B4%E9%9A%99%E9%94%81%E5%92%8C%E4%B8%B4%E9%94%AE%E9%94%81.html</a></p>
+<p><a href="https://www.cnblogs.com/zhoujinyi/p/3435982.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhoujinyi/p/3435982.html</a></p>
+<p><a href="https://time.geekbang.org/column/article/75659" target="_blank" rel="noopener">https://time.geekbang.org/column/article/75659</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/16/InnoDB%E7%9A%84%E9%94%81%EF%BC%883x%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-InnoDB的锁（3）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/14/InnoDB%E7%9A%84%E9%94%81%EF%BC%883%EF%BC%89/">InnoDB的锁（3）</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/14/InnoDB%E7%9A%84%E9%94%81%EF%BC%883%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-05-14T13:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>InnoDB performs row-level locking in such a way that when it searches or scans a table index, it sets shared or exclusive locks on the index records it encounters. Thus, the row-level locks are actually index-record locks. (InnoDB执行行级锁方式是当它搜索或扫描表索引时，会在遇到的索引上加共享或排他锁，故行级锁实际上时索引记录锁)</p>
+<h3 id="记录锁（Record-Locks）"><a href="#记录锁（Record-Locks）" class="headerlink" title="记录锁（Record Locks）"></a>记录锁（Record Locks）</h3><ul>
+<li><p>定义<br>A record lock is a lock on an <strong>index record</strong> （记录锁锁定的是<strong>索引</strong>记录）</p>
+</li>
+<li><p>例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM WHERE id &#x3D; 1 FOR UPDATE;</span><br></pre></td></tr></table></figure>
+<p>它会在id=1的索引记录上加锁，以阻止其他事务插入，更新，删除id=1的这一行</p>
+</li>
+</ul>
+<h3 id="间隙锁（Gap-Locks）"><a href="#间隙锁（Gap-Locks）" class="headerlink" title="间隙锁（Gap Locks）"></a>间隙锁（Gap Locks）</h3><ul>
+<li>定义<br>A gap lock is a lock on a gap between index records, or a lock on the gap before the first or after the last index record.（间隙锁锁定的是<strong>索引</strong>记录间的间隔，或是第一条索引之前的范围，亦或是最后一条索引之后的范围）</li>
+<li>例子<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM t WHERE id BETWEEN 10 and 20 FOR UPDATE;</span><br></pre></td></tr></table></figure>
+会锁定（10，20），防止其他事务插入，更新，删除id在（10，20）间的记录</li>
+</ul>
+<p><strong>对于使用唯一索引来锁定唯一行的语句，不会产生间隙锁，而是使用记录锁。</strong> (This does not include the case that the search condition includes only some columns of a multiple-column unique index; in that case, gap locking does occur. 这句话暂时没明白)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM WHERE id &#x3D; 1 FOR UPDATE;</span><br></pre></td></tr></table></figure>
+<p>如果id未建立索引或具有非唯一索引，则该语句会产生间隙锁，锁定前面的间隙。</p>
+<h3 id="临键锁（Next-Key-Locks）"><a href="#临键锁（Next-Key-Locks）" class="headerlink" title="临键锁（Next-Key Locks）"></a>临键锁（Next-Key Locks）</h3><ul>
+<li>定义<br>A next-key lock is a combination of a record lock on the index record and a gap lock on the gap before the index record.（临键锁是锁定索引的记录锁和锁定该索引之前区间的间隙锁的组合）</li>
+</ul>
+<p><strong>默认情况下（RR），InnoDB使用临键锁进行搜索和索引扫描。</strong></p>
+<p>假设索引记录为 10, 11, 13, 20</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(-∞, 10]</span><br><span class="line">(10, 11]</span><br><span class="line">(11, 13]</span><br><span class="line">(13, 20]</span><br><span class="line">(20, +∞)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="插入意向锁（Insert-Intention-Locks）"><a href="#插入意向锁（Insert-Intention-Locks）" class="headerlink" title="插入意向锁（Insert Intention Locks）"></a>插入意向锁（Insert Intention Locks）</h3><ul>
+<li>定义<br>An insert intention lock is a type of gap lock set by INSERT operations prior to row insertion. （插入意向锁时插入行之前的插入操作设置的一种间隙锁）</li>
+</ul>
+<p>多个事务，在同一个索引，同一个范围区间插入记录时，<strong>如果插入的位置不冲突，不会阻塞彼此。</strong></p>
+<p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/14/InnoDB%E7%9A%84%E9%94%81%EF%BC%883%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-InnoDB的锁（2）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/12/InnoDB%E7%9A%84%E9%94%81%EF%BC%882%EF%BC%89/">InnoDB的锁（2）</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/12/InnoDB%E7%9A%84%E9%94%81%EF%BC%882%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-05-12T13:18:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="共享-排他锁（Shared-and-Exclusice-Locks）"><a href="#共享-排他锁（Shared-and-Exclusice-Locks）" class="headerlink" title="共享/排他锁（Shared and Exclusice Locks）"></a>共享/排他锁（Shared and Exclusice Locks）</h3><p><strong>行级锁</strong></p>
+<ul>
+<li><p>定义</p>
+<ul>
+<li><strong>事务</strong>拿到某一行记录的共享S锁，才可以读取（当前读）这一行；</li>
+<li><strong>事务</strong>拿到某一行记录的排他X锁，才可以修改或者删除这一行；</li>
+</ul>
+</li>
+<li><p>加锁方式</p>
+<ul>
+<li>共享锁（S）：SELECT … LOCK IN SHARE MODE</li>
+<li>排他锁（X）：SELECT … FOR UPDATE （<strong>update/delete/insert自动加排他锁</strong>）</li>
+</ul>
+</li>
+<li><p>互斥关系</p>
+<table>
+<thead>
+<tr>
+<th align="center">-</th>
+<th align="center">S</th>
+<th align="center">X</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">S</td>
+<td align="center">兼容</td>
+<td align="center">互斥</td>
+</tr>
+<tr>
+<td align="center">X</td>
+<td align="center">互斥</td>
+<td align="center">互斥</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="意向锁（Intention-Locks）"><a href="#意向锁（Intention-Locks）" class="headerlink" title="意向锁（Intention Locks）"></a>意向锁（Intention Locks）</h3><p><strong>不与行级锁冲突表级锁</strong></p>
+<ul>
+<li><p>分类</p>
+<ul>
+<li>意向共享锁(intention shared lock, IS)，它预示着，事务有意向对表中的某些行加共享S锁。</li>
+<li>意向排它锁(intention exclusive lock, IX)，它预示着，事务有意向对表中的某些行加排它X锁。</li>
+</ul>
+</li>
+<li><p>intention locking protocol</p>
+<ul>
+<li>事务要获得某些<strong>行</strong>的S锁，必须先获得表的IS锁。</li>
+<li>事务要获得某些<strong>行</strong>的X锁，必须先获得表的IX锁。</li>
+</ul>
+</li>
+<li><p>互斥关系（<strong>下表的S/X锁是表级的!!!</strong>）</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">-</th>
+<th align="center">X</th>
+<th align="center">IX</th>
+<th align="center">S</th>
+<th align="center">IS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">X</td>
+<td align="center">互斥</td>
+<td align="center">互斥</td>
+<td align="center">互斥</td>
+<td align="center">互斥</td>
+</tr>
+<tr>
+<td align="center">IX</td>
+<td align="center">互斥</td>
+<td align="center">兼容</td>
+<td align="center">互斥</td>
+<td align="center">兼容</td>
+</tr>
+<tr>
+<td align="center">S</td>
+<td align="center">互斥</td>
+<td align="center">互斥</td>
+<td align="center">兼容</td>
+<td align="center">兼容</td>
+</tr>
+<tr>
+<td align="center">IS</td>
+<td align="center">互斥</td>
+<td align="center">兼容</td>
+<td align="center">兼容</td>
+<td align="center">兼容</td>
+</tr>
+</tbody></table>
+<ul>
+<li>判断冲突时的作用<br>无意向锁 ： <ul>
+<li>判断表是否被其他事务加表锁。</li>
+<li>判断表中的每一行是否被其他事务加行锁。<br>有意向锁 ：</li>
+<li>判断表是否被其他事务加表锁。</li>
+<li>判断表是否被其他事务加意向锁。</li>
+</ul>
+</li>
+</ul>
+<p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/12/InnoDB%E7%9A%84%E9%94%81%EF%BC%882%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-InnoDB的锁（1）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/">InnoDB的锁（1）自增锁（AUTO-INC Locks）</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-05-10T13:27:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>本文不介绍MySQL的读表锁（LOCK TABLE table_name READ）和写表锁（LOCK TABLE table_name WRITE</strong></p>
+<p>自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。</p>
 <h3 id="insert分类"><a href="#insert分类" class="headerlink" title="insert分类"></a>insert分类</h3><ul>
 <li><p>Simple inserts<br>Statements for which the number of rows to be inserted can be determined in advance (when the statement is initially processed). This includes single-row and multiple-row INSERT and REPLACE statements that do not have a nested subquery, but not INSERT … ON DUPLICATE KEY UPDATE.</p>
 </li>
@@ -312,6 +687,7 @@
 </ul>
 </li>
 </ul>
+<p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks</a></p>
 
       
 
@@ -339,7 +715,94 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/05/InnoDB%E4%B9%8B%E9%94%81%EF%BC%881%EF%BC%89/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/05/10/InnoDB%E7%9A%84%E9%94%81%EF%BC%881%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-InnoDB的MVCC" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/05/InnoDB%E7%9A%84MVCC/">InnoDB的MVCC（Multi Versioning Concurrency Control）</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/05/InnoDB%E7%9A%84MVCC/" class="archive-article-date">
+  	<time datetime="2020-05-05T06:25:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>InnoDB is a multi-versioned storage engine: it keeps information about old versions of changed rows, to support transactional features such as concurrency and rollback.This information is stored in the tablespace in a data structure called a rollback segment（InndDB是多版本的存储引擎，它保留已更改行旧版本信息，以支持事务的并发和回滚，这些信息保存在被称为回滚段的表空间数据结构中）</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><ul>
+<li><p>InnoDB会在所有行上加上三个属性：<br>DB_TRX_ID：6字节，记录每一行最近一次修改它的事务ID。<br>DB_ROLL_PTR：7字节，记录指向回滚段UNDO LOG的指针。<br>DB_ROW_ID：6字节，单调递增的行ID。</p>
+</li>
+<li><p>undo log  </p>
+</li>
+</ul>
+<p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-multi-versioning.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-multi-versioning.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-undo-logs.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-undo-logs.html</a></p>
+<p><a href="https://blog.csdn.net/SnailMann/article/details/94724197" target="_blank" rel="noopener">https://blog.csdn.net/SnailMann/article/details/94724197</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/05/InnoDB%E7%9A%84MVCC/">展开全文 >></a>
         </p>
       
 
@@ -776,353 +1239,6 @@
 
 
   
-    <article id="post-方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/30/%E6%96%B9%E6%B3%95/">方法</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/30/%E6%96%B9%E6%B3%95/" class="archive-article-date">
-  	<time datetime="2020-03-30T11:09:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="检查参数有效性"><a href="#检查参数有效性" class="headerlink" title="检查参数有效性"></a>检查参数有效性</h3><ul>
-<li>大多数方法和构造方法对可以将哪些值传递到其对应参数中有一些限制。例如，索引值必须是非负数。<strong><em>在方法的开头检查参数，抛出适当的异常快速且清楚的结束方法</em></strong>。如果不检查参数，可能会出现令人困惑的异常，或者方法正常返回，但计算错误。</li>
-<li>可以使用guava的Preconditions检查参数。
-        
-          <a class="article-more-a" href="/2020/03/30/%E6%96%B9%E6%B3%95/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/30/%E6%96%B9%E6%B3%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Lambdas和Streams" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/28/Lambdas%E5%92%8CStreams/">Lambdas和Streams</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/28/Lambdas%E5%92%8CStreams/" class="archive-article-date">
-  	<time datetime="2020-03-28T09:40:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="优先使用标准的函数式接口"><a href="#优先使用标准的函数式接口" class="headerlink" title="优先使用标准的函数式接口"></a>优先使用标准的函数式接口</h3><ul>
-<li>有了lambda后，编写 API 的最佳实践已经发生了很大的变化，例如模板方法模式，其中一个子类重写原始方法以专门化其父类的行为，变得没有那么吸引人。现代替代的选择是提供一个静态工厂或构造方法来接受函数对象以达到相同的效果。<br>例如 LinkedHashMap，可以通过重写removeEldestEntry 方法将此类用作缓存，每次将新的key 值加入到 map时都会调用该方法，当此方法返回true时，map将删除传递给该方法的最久条目。
-        
-          <a class="article-more-a" href="/2020/03/28/Lambdas%E5%92%8CStreams/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/28/Lambdas%E5%92%8CStreams/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-枚举-effective-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/25/%E6%9E%9A%E4%B8%BE-effective-java/">枚举</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/25/%E6%9E%9A%E4%B8%BE-effective-java/" class="archive-article-date">
-  	<time datetime="2020-03-25T08:41:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="使用枚举类型替代整型常量"><a href="#使用枚举类型替代整型常量" class="headerlink" title="使用枚举类型替代整型常量"></a>使用枚举类型替代整型常量</h3><ul>
-<li>在枚举类型添加到java之前，表示枚举的常见模式是一组名为int的常量，每个类型的成员都有一个常量，没有简单的方法将 int 枚举常量转换为可打印的字符串。如果你打印这样一个常量或者从调试器中显示出来，你看到的只是一个数字。 没有可靠的方法来迭代组中的所有 int 枚举常量，甚至无法获得int 枚举组的大小(String枚举亦然)。
-        
-          <a class="article-more-a" href="/2020/03/25/%E6%9E%9A%E4%B8%BE-effective-java/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/25/%E6%9E%9A%E4%B8%BE-effective-java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-泛型-effective java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/19/%E6%B3%9B%E5%9E%8B-effective%20java/">泛型</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/19/%E6%B3%9B%E5%9E%8B-effective%20java/" class="archive-article-date">
-  	<time datetime="2020-03-19T05:42:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="不要使用原始类型"><a href="#不要使用原始类型" class="headerlink" title="不要使用原始类型"></a>不要使用原始类型</h3><ul>
-<li>一个类或接口，它的声明有一个或多个类型参数（type parameters ），统称为泛型类型（generic types）。没有任何类型参数的泛型类型称为原始类型（List是List &lt;T&gt;的原始类型）。它们的存在主要是为了与没有泛型之前的代码相兼容。</li>
-<li>使用原始类型是合法的，但如果你使用原始类型，则会丧失泛型的所有安全性和表达上的优势<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private final List stamps &#x3D; ... ; &#x2F;&#x2F;警告</span><br><span class="line">stamps.add(new Coin());&#x2F;&#x2F; 如果有泛型，此处无法编译</span><br><span class="line">(Stamp)stamps.get(0);&#x2F;&#x2F;编译通过，运行ClassCastException</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="列表优于数组"><a href="#列表优于数组" class="headerlink" title="列表优于数组"></a>列表优于数组</h3><p>1.1. 数组是协变的(covariant)，<strong>即如果Child是Super的子类型，那么Child[]亦是Super[]的子类型。</strong><br>1.2. 泛型是不变的(invariant)，<strong>对于任意两种不同的类型Type1，Type2，List<Type1>既不是List<Type>的子类型也不是父类型。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;运行时会抛出ArrayStoreException</span><br><span class="line">Object[] objectArray &#x3D; new Long[1];</span><br><span class="line">objectArray[0] &#x3D; &quot;I don&#39;t fit in&quot;;</span><br><span class="line">&#x2F;&#x2F;无法编译</span><br><span class="line">List&lt;Object&gt; ol &#x3D; new ArrayList&lt;Long&gt;();</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2020/03/19/%E6%B3%9B%E5%9E%8B-effective%20java/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/19/%E6%B3%9B%E5%9E%8B-effective%20java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1216,15 +1332,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">
