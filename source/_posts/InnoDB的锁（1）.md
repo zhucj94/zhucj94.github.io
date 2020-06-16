@@ -1,9 +1,11 @@
 ---
 title: InnoDB的锁（1）自增锁（AUTO-INC Locks）
-date: 2020-05-05 21:27:21
+date: 2020-05-10 21:27:21
 tags: MySQL
 declare: true
 ---
+**本文不介绍MySQL的读表锁（LOCK TABLE table_name READ）和写表锁（LOCK TABLE table_name WRITE**
+
 自增锁是一种特殊的表级别锁（table-level lock），专门针对事务插入AUTO_INCREMENT类型的列。
 
 ### insert分类
@@ -36,7 +38,8 @@ Another type of “mixed-mode insert” is INSERT ... ON DUPLICATE KEY UPDATE, w
     + binlog为SBR模式时，数据复制或恢复不安全
 
 
-MySQL 5.6 锁文档
+
+参考
 https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks
 
 

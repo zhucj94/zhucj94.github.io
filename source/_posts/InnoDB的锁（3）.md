@@ -1,6 +1,6 @@
 ---
 title: InnoDB的锁（3）
-date: 2020-05-11 21:56:50
+date: 2020-05-14 21:56:50
 tags: MySQL
 declare: true
 ---
@@ -54,5 +54,6 @@ An insert intention lock is a type of gap lock set by INSERT operations prior to
 多个事务，在同一个索引，同一个范围区间插入记录时，**如果插入的位置不冲突，不会阻塞彼此。**
 
 
-MySQL 5.6 锁文档
+
+参考
 https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks

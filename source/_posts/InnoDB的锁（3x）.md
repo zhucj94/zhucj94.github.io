@@ -1,5 +1,5 @@
 ---
-title: InnoDB的锁（3+）
+title: InnoDB的锁（3x）
 date: 2020-05-16 16:15:16
 tags: MySQL
 declare: true
@@ -14,10 +14,10 @@ declare: true
 ### 例子
 
 
-MySQL 5.6 锁文档
-https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks
 
 参考
+https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html#innodb-auto-inc-locks
+
 https://blog.guitar-coder.cn/MySql%E9%94%81-%E9%97%B4%E9%9A%99%E9%94%81%E5%92%8C%E4%B8%B4%E9%94%AE%E9%94%81.html
 
 https://www.cnblogs.com/zhoujinyi/p/3435982.html
