@@ -1,6 +1,6 @@
 ---
 title: 'InnoDB的MVCC（Multi Versioning Concurrency Control）'
-date: 2020-05-05 14:25:29
+date: 2020-05-05 20:25:29
 tags: MySQL
 declare: true
 ---
