@@ -154,6 +154,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-InnoDB快照读与当前读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/21/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">InnoDB快照读与当前读</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/21/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/" class="archive-article-date">
+  	<time datetime="2020-06-21T08:51:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="快照读（Consistent-Nonlocking-Reads）"><a href="#快照读（Consistent-Nonlocking-Reads）" class="headerlink" title="快照读（Consistent Nonlocking Reads）"></a>快照读（Consistent Nonlocking Reads）</h3><p>A consistent read means that InnoDB uses multi-versioning to present to a query a snapshot of the database at a point in time.（快照读是InnoDB使用多版本来查询某个时间点的快照）</p>
+<p>Consistent read is the default mode in which InnoDB processes SELECT statements in READ COMMITTED and REPEATABLE READ isolation levels. A consistent read does not set any locks on the tables it accesses, and therefore other sessions are free to modify those tables at the same time a consistent read is being performed on the table.（快照读是RR和RC下处理SELECT的默认模式，快照读不在访问的表上设置任何锁，因此其他会话可以自由的修改这些表。）</p>
+<h3 id="当前读（Locking-Reads）"><a href="#当前读（Locking-Reads）" class="headerlink" title="当前读（Locking Reads）"></a>当前读（Locking Reads）</h3><p>If you query data and then insert or update related data within the same transaction, the regular SELECT statement does not give enough protection. Other transactions can update or delete the same rows you just queried. （在同一事务中查询数据，然后更新或修改相关数据，快照读不能提供足够保护，其他事务可以修改或删除刚查询的行。）</p>
+<p>InnoDB提供了 <strong>SELECT … LOCK IN SHARE MODE（共享锁）</strong>和 <strong>SELECT … FOR UPDATE（排他锁）</strong>提供额外的安全。</p>
+<p>参考：<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/21/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-InnoDB的缓冲池-buffer-pool" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -161,13 +244,13 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/01/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">InnoDB之缓冲池(buffer pool)</a>
+      <a class="article-title" href="/2020/06/11/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">InnoDB之缓冲池(buffer pool)</a>
     </h1>
   
 
         
-        <a href="/2020/06/01/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" class="archive-article-date">
-  	<time datetime="2020-06-01T14:20:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-01</time>
+        <a href="/2020/06/11/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" class="archive-article-date">
+  	<time datetime="2020-06-11T14:20:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-11</time>
 </a>
         
       </header>
@@ -229,7 +312,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/01/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/06/11/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/">展开全文 >></a>
         </p>
       
 
@@ -765,13 +848,78 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>InnoDB is a multi-versioned storage engine: it keeps information about old versions of changed rows, to support transactional features such as concurrency and rollback.This information is stored in the tablespace in a data structure called a rollback segment（InndDB是多版本的存储引擎，它保留已更改行旧版本信息，以支持事务的并发和回滚，这些信息保存在被称为回滚段的表空间数据结构中）</p>
-<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><ul>
-<li><p>InnoDB会在所有行上加上三个属性：<br>DB_TRX_ID：6字节，记录每一行最近一次修改它的事务ID。<br>DB_ROLL_PTR：7字节，记录指向回滚段UNDO LOG的指针。<br>DB_ROW_ID：6字节，单调递增的行ID。</p>
+        <p><strong>MVCC主要是为了提高数据库并发性能，用更好的方式去处理读-写冲突</strong>，做到即使有读写冲突时，也能做到不加锁，非阻塞并发读。（读指快照读）</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>InnoDB is a multi-versioned storage engine: it keeps information about old versions of changed rows, to support transactional features such as concurrency and rollback.This information is stored in the tablespace in a data structure called a rollback segment（InndDB是多版本的存储引擎，它保留已更改行旧版本信息，以支持事务的并发和回滚，这些信息保存在被称为回滚段的表空间数据结构中）</p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><h4 id="隐藏字段"><a href="#隐藏字段" class="headerlink" title="隐藏字段"></a>隐藏字段</h4><ul>
+<li>DB_TRX_ID：6字节，记录每一行最近一次修改它的事务ID。</li>
+<li>DB_ROLL_PTR：7字节，记录指向回滚段UNDO LOG的指针。</li>
+<li>DB_ROW_ID：6字节，单调递增的行ID。</li>
+</ul>
+<h4 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h4><ul>
+<li><p>分类</p>
+<ul>
+<li>insert undo log：事务在insert操作时产生的undo log，只用于事务回滚，在事务提交时立即被丢弃。</li>
+<li>update undo log：事务在update或delete操作时产生的undo log；在事务回归时需要，<strong>在快照读时也需要</strong>，不会随便删除，只有在快速读或事务回滚不涉及该日志时，对应的日志才会被purge线程统一清除。</li>
+</ul>
 </li>
-<li><p>undo log  </p>
+<li><p>执行流程</p>
+<ul>
+<li><p>假设person表有如下数据</p>
+<table>
+<thead>
+<tr>
+<th align="center">name</th>
+<th align="center">age</th>
+<th align="center">DB_ROW_ID</th>
+<th align="center">DB_TRX_ID</th>
+<th align="center">DB_ROLL_PTR</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">jerry</td>
+<td align="center">24</td>
+<td align="center">1</td>
+<td align="center">null</td>
+<td align="center">null</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>事务1将name修改为tom</p>
+<ul>
+<li>事务1获取并对该行加排他锁</li>
+<li>将行数据拷贝到undo log中</li>
+<li>将name改为tom，并经DB_TRX_ID改为事务1的ID,回滚指针指向之前拷贝到undo log的行数据</li>
+<li>提交事务，释放排他锁<br><img src="/images/InnoDB/update-undo-log-4-mvcc1.png" alt="avatar"></li>
+</ul>
+</li>
+<li><p>事务2将age改为30</p>
+<ul>
+<li>事务2获取并对该行加排他锁</li>
+<li>将行数据拷贝到undo log中，发现该行记录已有undo log，将本次的拷贝作为链表的表头。</li>
+<li>将age改为30，并经DB_TRX_ID改为事务2的ID,回滚指针指向之前拷贝到undo log的行数据</li>
+<li>提交事务，释放排他锁<br><img src="/images/InnoDB/update-undo-log-4-mvcc2.png" alt="avatar"></li>
+</ul>
 </li>
 </ul>
+</li>
+</ul>
+<p>MVCC使用的是 <strong>update undo log ，undo log实际上就是存在rollback segment中旧记录链</strong></p>
+<h4 id="Read-View"><a href="#Read-View" class="headerlink" title="Read View"></a>Read View</h4><p><strong>Read View 是用来做可见性判断的</strong>，当事务执行快照读时，会生成数据库当前的一个快照，记录并维护系统当前活跃事务的ID。</p>
+<ul>
+<li><p>算法（简化版）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">id_list : 用来维护Read View生成时系统活跃的事务ID（分配的事务ID是递增的）</span><br><span class="line">up_limit_id：id_list中最小的事务ID</span><br><span class="line">low_limit_id：ReadView生成时刻系统尚未分配的下一个事务ID，**即已出现过最大的事务ID的+1**</span><br></pre></td></tr></table></figure>
+<ul>
+<li>比较DB_TRX_ID与up_limit_id，如果小于，则当前事务能看到DB_TRX_ID所在的行数据，否则进入下一步。</li>
+<li>比较DB_TRX_ID与low_limit_id，如果大于，则当前事务不能看到DB_TRX_ID所在的行数据，否则进入下一步。</li>
+<li>判断DB_TRX_ID是否在id_list中，如果在，则当前事务不能看到DB_TRX_ID所在的行数据，否则能看到。</li>
+</ul>
+</li>
+<li><p>流程<br>将当前数据的DB_TRX_ID取出，与Read View维护活跃事务ID进行比较（通过上面的算法），如果如果不符合可见性，就通过DB_ROLL_PTR取undo log中的记录，将它的DB_TRX_ID与Read View维护活跃事务ID进行比较，如果还不符合，就取链表的下一条记录，直至满足可见性，那么这个DB_TRX_ID所在的旧纪录就是当前事务能看见的记录。</p>
+</li>
+<li><p>RR与RC下Read View生成时机</p>
+</li>
+</ul>
+<p><strong>RC隔离级别下，每个快照读都会生成并获取最新的Read View；而在RR隔离级别下，同一个事务中的第一个快照读才会创建Read View, 之后的快照读获取的都是同一个Read View。</strong><br>这就是RR的快照读能防止幻读，而RC不能的原因。</p>
 <p>参考<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-multi-versioning.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-multi-versioning.html</a></p>
 <p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-undo-logs.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-undo-logs.html</a></p>
 <p><a href="https://blog.csdn.net/SnailMann/article/details/94724197" target="_blank" rel="noopener">https://blog.csdn.net/SnailMann/article/details/94724197</a></p>
@@ -1124,92 +1272,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-异常" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/02/%E5%BC%82%E5%B8%B8/">异常</a>
-    </h1>
-  
-
-        
-        <a href="/2020/04/02/%E5%BC%82%E5%B8%B8/" class="archive-article-date">
-  	<time datetime="2020-04-02T06:22:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="对可恢复的情况使用受检异常，对编程错误使用运行时异常"><a href="#对可恢复的情况使用受检异常，对编程错误使用运行时异常" class="headerlink" title="对可恢复的情况使用受检异常，对编程错误使用运行时异常"></a>对可恢复的情况使用受检异常，对编程错误使用运行时异常</h3><ul>
-<li>如果期望调用者能够合理的恢复程序运行，对于这种情况就应该使用受检异常。</li>
-<li>用运行时异常来表明编程错误，例如数组的下标值在0到长度-1之间，ArrayIndexOutOfBoundsException表明违反了这个前提。按照惯例，<strong><em>错误（Error）往往被JVM保留下来使用，你实现的所有非受检的 throwable 都应该是 RuntimeExceptiond 子类。</em></strong>
-        
-          <a class="article-more-a" href="/2020/04/02/%E5%BC%82%E5%B8%B8/#more">more >></a>
-        
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/04/02/%E5%BC%82%E5%B8%B8/">展开全文 >></a>
         </p>
       
 
