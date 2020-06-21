@@ -154,89 +154,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-InnoDB快照读与当前读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/21/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">InnoDB快照读与当前读</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/21/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/" class="archive-article-date">
-  	<time datetime="2020-06-21T08:51:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="快照读（Consistent-Nonlocking-Reads）"><a href="#快照读（Consistent-Nonlocking-Reads）" class="headerlink" title="快照读（Consistent Nonlocking Reads）"></a>快照读（Consistent Nonlocking Reads）</h3><p>A consistent read means that InnoDB uses multi-versioning to present to a query a snapshot of the database at a point in time.（快照读是InnoDB使用多版本来查询某个时间点的快照）</p>
-<p>Consistent read is the default mode in which InnoDB processes SELECT statements in READ COMMITTED and REPEATABLE READ isolation levels. A consistent read does not set any locks on the tables it accesses, and therefore other sessions are free to modify those tables at the same time a consistent read is being performed on the table.（快照读是RR和RC下处理SELECT的默认模式，快照读不在访问的表上设置任何锁，因此其他会话可以自由的修改这些表。）</p>
-<h3 id="当前读（Locking-Reads）"><a href="#当前读（Locking-Reads）" class="headerlink" title="当前读（Locking Reads）"></a>当前读（Locking Reads）</h3><p>If you query data and then insert or update related data within the same transaction, the regular SELECT statement does not give enough protection. Other transactions can update or delete the same rows you just queried. （在同一事务中查询数据，然后更新或修改相关数据，快照读不能提供足够保护，其他事务可以修改或删除刚查询的行。）</p>
-<p>InnoDB提供了 <strong>SELECT … LOCK IN SHARE MODE（共享锁）</strong>和 <strong>SELECT … FOR UPDATE（排他锁）</strong>提供额外的安全。</p>
-<p>参考：<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html</a></p>
-<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html</a></p>
-
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/21/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-InnoDB的缓冲池-buffer-pool" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -841,7 +758,7 @@
 
         
         <a href="/2020/05/05/InnoDB%E7%9A%84MVCC/" class="archive-article-date">
-  	<time datetime="2020-05-05T06:25:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-05</time>
+  	<time datetime="2020-05-05T12:25:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-05</time>
 </a>
         
       </header>
@@ -951,6 +868,89 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/05/05/InnoDB%E7%9A%84MVCC/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-InnoDB快照读与当前读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/04/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">InnoDB快照读与当前读</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/04/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/" class="archive-article-date">
+  	<time datetime="2020-05-04T13:51:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="快照读（Consistent-Nonlocking-Reads）"><a href="#快照读（Consistent-Nonlocking-Reads）" class="headerlink" title="快照读（Consistent Nonlocking Reads）"></a>快照读（Consistent Nonlocking Reads）</h3><p>A consistent read means that InnoDB uses multi-versioning to present to a query a snapshot of the database at a point in time.（快照读是InnoDB使用多版本来查询某个时间点的快照）</p>
+<p>Consistent read is the default mode in which InnoDB processes SELECT statements in READ COMMITTED and REPEATABLE READ isolation levels. A consistent read does not set any locks on the tables it accesses, and therefore other sessions are free to modify those tables at the same time a consistent read is being performed on the table.（快照读是RR和RC下处理SELECT的默认模式，快照读不在访问的表上设置任何锁，因此其他会话可以自由的修改这些表。）</p>
+<h3 id="当前读（Locking-Reads）"><a href="#当前读（Locking-Reads）" class="headerlink" title="当前读（Locking Reads）"></a>当前读（Locking Reads）</h3><p>If you query data and then insert or update related data within the same transaction, the regular SELECT statement does not give enough protection. Other transactions can update or delete the same rows you just queried. （在同一事务中查询数据，然后更新或修改相关数据，快照读不能提供足够保护，其他事务可以修改或删除刚查询的行。）</p>
+<p>InnoDB提供了 <strong>SELECT … LOCK IN SHARE MODE（共享锁）</strong>和 <strong>SELECT … FOR UPDATE（排他锁）</strong>提供额外的安全。</p>
+<p>参考：<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/04/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">展开全文 >></a>
         </p>
       
 
@@ -1394,15 +1394,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">
