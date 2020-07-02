@@ -12,7 +12,7 @@
 <meta property="og:title" content="小朱的blog">
 <meta property="og:url" content="https://zhucj94.github.io/page/2/index.html">
 <meta property="og:site_name" content="小朱的blog">
-<meta property="article:author" content="想家的小朱">
+<meta property="article:author" content="想家的朱">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="小朱的blog" type="application/atom+xml">
@@ -56,7 +56,7 @@
 			<img src="/img/dlam.png" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">想家的小朱</a></h1>
+		  <h1 class="header-author"><a href="/">想家的朱</a></h1>
 		</hgroup>
 		
 		<p class="header-subtitle">及时当勉励，岁月不待人。</p>
@@ -108,7 +108,7 @@
 				<img src="/img/dlam.png" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">想家的小朱</h1>
+			  <h1 class="header-author js-header-author">想家的朱</h1>
 			</hgroup>
 			
 			<p class="header-subtitle"><i class="icon icon-quo-left"></i>及时当勉励，岁月不待人。<i class="icon icon-quo-right"></i></p>
@@ -153,6 +153,195 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-Oauth2-0" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/30/Oauth2-0/">Oauth2.0</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/30/Oauth2-0/" class="archive-article-date">
+  	<time datetime="2020-04-30T08:48:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。</p>
+<h3 id="令牌与密码的差异"><a href="#令牌与密码的差异" class="headerlink" title="令牌与密码的差异"></a>令牌与密码的差异</h3><ul>
+<li>令牌是短期的，<strong>到期后会失效</strong>，密码一般是长期的，用户不主动修改，不会改变。</li>
+<li>令牌可被颁发者主动撤销，而密码一般不可由他人控制。</li>
+<li>令牌的权限范围一般比密码小。</li>
+</ul>
+        
+          <a class="article-more-a" href="/2020/04/30/Oauth2-0/#more">more >></a>
+        
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Oauth2.0</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/30/Oauth2-0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-缓存与数据库一致性" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/">读写分离下数据库与缓存的一致性</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/" class="archive-article-date">
+  	<time datetime="2020-04-18T07:50:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3><ol>
+<li>尝试从缓存get数据，结果没有命中。</li>
+<li>从数据库获取数据，读从库。</li>
+<li>把数据set到缓存，未来能够命中缓存。<br><img src="/images/cache/read.png" alt="avatar"></li>
+</ol>
+<h3 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h3><ol>
+<li>delete缓存。</li>
+<li>操作数据库。<br><img src="/images/cache/write.png" alt="avatar"></li>
+</ol>
+<h3 id="为什么写操作先操作缓存，再操作数据库？"><a href="#为什么写操作先操作缓存，再操作数据库？" class="headerlink" title="为什么写操作先操作缓存，再操作数据库？"></a>为什么写操作先操作缓存，再操作数据库？</h3><ul>
+<li>如果操作数据库成功，但是操作缓存失败，会导致数据库与缓存的不一致。</li>
+</ul>
+<h3 id="写操作为什么不更新缓存，而是删除？"><a href="#写操作为什么不更新缓存，而是删除？" class="headerlink" title="写操作为什么不更新缓存，而是删除？"></a>写操作为什么不更新缓存，而是删除？</h3><ul>
+<li>使用更新，1成功，2失败，会导致缓存里是更新后的数据，数据库里是之前的数据，数据不一致。</li>
+<li>使用删除，1成功，2失败，会导致缓存里没有数据，数据库里是之前的数据，数据没有不一致。只是下一次读取，会多一次cache miss。</li>
+</ul>
+<h3 id="写操作完成后，数据库主从同步未完成-主库是新数据-从库是旧数据-，此时读操作将旧数据写入缓存，怎么办？"><a href="#写操作完成后，数据库主从同步未完成-主库是新数据-从库是旧数据-，此时读操作将旧数据写入缓存，怎么办？" class="headerlink" title="写操作完成后，数据库主从同步未完成(主库是新数据,从库是旧数据)，此时读操作将旧数据写入缓存，怎么办？"></a>写操作完成后，数据库主从同步未完成(主库是新数据,从库是旧数据)，此时读操作将旧数据写入缓存，怎么办？</h3><ul>
+<li>方案一<ul>
+<li>通过工具（canal）订阅从库的binlog，从库执行完写操作后，再次删除缓存，淘汰可能写入缓存的旧数据。</li>
+</ul>
+</li>
+<li>方案二<ul>
+<li>写操作后，将哪个库，哪个表，哪个主键三个信息拼装一个key写到cache里，这条记录的超时时间，设置为“主从同步所需时间”。</li>
+<li>读操作第二步改为拼装key去缓存中查找，如果命中则强制读主库，否则读从库。</li>
+</ul>
+</li>
+</ul>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">缓存</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/18/%E7%BC%93%E5%AD%98%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-异常" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -865,7 +1054,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 想家的小朱
+    		&copy; 2020 想家的朱
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -944,10 +1133,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
@@ -961,6 +1146,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
               </li>
              
               <li class="article-tag-list-item">
