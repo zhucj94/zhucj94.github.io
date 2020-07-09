@@ -6,14 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://zhucj94.github.io">
-  <title>索引（1） | 小朱的blog</title>
+  <title>索引（2） | 小朱的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文探讨多列索引（B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于以下两张表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) D">
+  <meta name="description" content="本文探讨多列索引（类型为B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于下表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) D">
 <meta property="og:type" content="article">
-<meta property="og:title" content="索引（1）">
+<meta property="og:title" content="索引（2）">
 <meta property="og:url" content="https://zhucj94.github.io/2020/06/25/%E7%B4%A2%E5%BC%95%EF%BC%881%EF%BC%89/index.html">
 <meta property="og:site_name" content="小朱的blog">
-<meta property="og:description" content="本文探讨多列索引（B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于以下两张表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) D">
+<meta property="og:description" content="本文探讨多列索引（类型为B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于下表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) D">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/explain.png">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/left1.png">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/left2.png">
@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://zhucj94.github.io/images/index/isnotnull.png">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/like.png">
 <meta property="article:published_time" content="2020-06-25T12:53:06.000Z">
-<meta property="article:modified_time" content="2020-07-07T13:43:25.535Z">
+<meta property="article:modified_time" content="2020-07-09T15:05:20.210Z">
 <meta property="article:author" content="飞光">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -176,7 +176,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      索引（1）
+      索引（2）
     </h1>
   
 
@@ -189,7 +189,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本文探讨<strong>多列索引（B-TREE）</strong>对哪些查询有效<br>Mysql版本为5.7<br>下面的sql均是基于以下两张表~</p>
+        <p>本文探讨<strong>多列索引（类型为B-TREE）</strong>对哪些查询有效<br>Mysql版本为5.7<br>下面的sql均是基于下表~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;emp&#96; (</span><br><span class="line">  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  &#96;num&#96; int(11) NOT NULL,</span><br><span class="line">  &#96;name&#96; varchar(20) DEFAULT NULL,</span><br><span class="line">  &#96;age&#96; int(3) DEFAULT NULL,</span><br><span class="line">  &#96;dept_id&#96; int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4;</span><br><span class="line"></span><br><span class="line">CREATE INDEX idx_age_deptid_name ON emp(age,dept_id,name)</span><br></pre></td></tr></table></figure>
 <h3 id="explain关键字"><a href="#explain关键字" class="headerlink" title="explain关键字"></a>explain关键字</h3><p> <img src="/images/index/explain.png" alt="avatar"></p>
 <ul>
@@ -200,7 +200,7 @@
 <li>Using filesort：无法使用索引排序，使用效率低的文件排序</li>
 <li>Using temporary：使用临时表保存中间结果,常见于 order by 和 group by</li>
 <li>Using index condition：使用索引条件下推（5.6加入）</li>
-<li>Using index</li>
+<li>Using index：使用覆盖索引，不需要回表</li>
 <li>Using where</li>
 <li>Using join buffer</li>
 <li>impossible where</li>
@@ -212,7 +212,7 @@
 <p><img src="/images/index/left2.png" alt="avatar"></p>
 <p><img src="/images/index/left3.png" alt="avatar"></p>
 <p>图2由于不是从索引最左列开始，所以没有用到索引（key为NULL）<br>图3虽然用到了索引，但是跳过了dept_id，只用到了索引的一部分（key_len 5 &lt; 93）</p>
-<h3 id="不在索引列上做任何操作-索引不能是表达是的一部分"><a href="#不在索引列上做任何操作-索引不能是表达是的一部分" class="headerlink" title="不在索引列上做任何操作(索引不能是表达是的一部分)"></a>不在索引列上做任何操作(索引不能是表达是的一部分)</h3><p>计算、函数、(自动or手动)类型转换，会导致索引失效<br><img src="/images/index/oper1.png" alt="avatar"></p>
+<h3 id="不在索引列上做任何操作-索引不能是表达式的一部分"><a href="#不在索引列上做任何操作-索引不能是表达式的一部分" class="headerlink" title="不在索引列上做任何操作(索引不能是表达式的一部分)"></a>不在索引列上做任何操作(索引不能是表达式的一部分)</h3><p>计算、函数、(自动or手动)类型转换，会导致索引失效<br><img src="/images/index/oper1.png" alt="avatar"></p>
 <p><img src="/images/index/oper2.png" alt="avatar"></p>
 <p><img src="/images/index/oper3.png" alt="avatar"></p>
 <p>图1由于在索引上计算导致无法使用索引<br>图2由于在索引上使用了函数导致无法使用索引<br>图3由于在name上有类型转换（<strong>name为varchar，123没有引号</strong>），导致name失效（key_len 10&lt; 93）</p>
@@ -324,18 +324,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/06/27/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          索引（2)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/06/11/InnoDB%E7%9A%84%E7%BC%93%E5%86%B2%E6%B1%A0-buffer-pool/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">InnoDB之缓冲池(buffer pool)</div>
+    <a href="/2020/06/23/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">索引（1)</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -457,14 +448,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
@@ -474,6 +457,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">

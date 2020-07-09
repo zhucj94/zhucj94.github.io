@@ -154,124 +154,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-索引（2）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/27/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/">索引（2)</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/27/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-06-27T08:43:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="前缀索引和索引选择性"><a href="#前缀索引和索引选择性" class="headerlink" title="前缀索引和索引选择性"></a>前缀索引和索引选择性</h3><ul>
-<li><p>前缀索引<br>前缀索引是一种能使索引更小，更快的方式，即只索引开始的部分字符，这样可以节约索引空间，提高索引效率。<br>对于BLOB，TEXT，很长的VARCHAR列，必须使用前缀索引，因为MySQL不允许索引这些列的完整长度。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE dept add key(name(5))</span><br></pre></td></tr></table></figure>
-<p>但是这也会降低索引选择性。</p>
-</li>
-<li><p>索引选择性</p>
-</li>
-</ul>
-<p><strong>不重复的索引值和数据表的记录总数的比值，索引选择性越高则查询效率越高</strong>，因为选择性高的索引能让MySQL在查找时过滤更多的行。</p>
-<ul>
-<li>计算索引选择性<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    count( DISTINCT LEFT ( NAME, 3 ) ) &#x2F; count( 1 ) sel3,</span><br><span class="line">    count( DISTINCT LEFT ( NAME, 4 ) ) &#x2F; count( 1 ) sel4,</span><br><span class="line">    count( DISTINCT LEFT ( NAME, 5 ) ) &#x2F; count( 1 ) sel5</span><br><span class="line">FROM</span><br><span class="line">    dept</span><br></pre></td></tr></table></figure>
-一般来说能够接近0.031，基本就可用。</li>
-</ul>
-<h3 id="多列索引的索引列的顺序"><a href="#多列索引的索引列的顺序" class="headerlink" title="多列索引的索引列的顺序"></a>多列索引的索引列的顺序</h3><ul>
-<li>经验法则<br>将选择性最高的列放到索引最前列</li>
-</ul>
-<h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>聚簇索引不是一宗索引类型，而是一种数据存储方式。<br>InnoDB的聚簇索引实际上在<strong>同一结构中保存了B-Tree索引和数据行</strong>，即当表有聚簇索引时，数据行实际存放在索引的叶子页中。</p>
-<p> <img src="/images/index/clustered_index.png" alt="avatar"></p>
-<p><strong>InnoDB一定会有聚簇索引</strong>，有主键时就是主键，没有定义主键，InnoDB会选择唯一的非空索引代替，如有这样的缩影，会隐式定义一个主键。</p>
-<ul>
-<li><p>缺点</p>
-<ul>
-<li>插入速度依赖插入顺序，如果不按照主键顺序加载数据，那么在加载完成后最好使用OPTIMIZE TABLE重新组织表。<br><img src="/images/index/insert2.png" alt="avatar"></li>
-</ul>
-<p><img src="/images/index/insert1.png" alt="avatar"></p>
-<ul>
-<li>更新聚簇索引列代价高，因为会强制将被更新的行移动到新位置。</li>
-<li>可能会有‘页分裂（page split）’问题，当行插入到某个已满的页中，存储引擎会将页分裂成两个页，这会导致表占用更多的空间。</li>
-<li><strong>二级索引会有‘回表’问题，因为二级索引叶子节点保存的是行的主键值，而不是‘行指针’，所以使用二级索引的查询需要先找到二级索引的叶子节点获取主键值，然后去聚簇索引查找对应的行。</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p>如果一个索引包含所有需要查询的字段的值，就称为覆盖索引。</p>
-
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">高性能MySQL第3版</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/27/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-索引（1）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -279,7 +161,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/%E7%B4%A2%E5%BC%95%EF%BC%881%EF%BC%89/">索引（1）</a>
+      <a class="article-title" href="/2020/06/25/%E7%B4%A2%E5%BC%95%EF%BC%881%EF%BC%89/">索引（2）</a>
     </h1>
   
 
@@ -292,7 +174,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本文探讨<strong>多列索引（B-TREE）</strong>对哪些查询有效<br>Mysql版本为5.7<br>下面的sql均是基于以下两张表~</p>
+        <p>本文探讨<strong>多列索引（类型为B-TREE）</strong>对哪些查询有效<br>Mysql版本为5.7<br>下面的sql均是基于下表~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;emp&#96; (</span><br><span class="line">  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  &#96;num&#96; int(11) NOT NULL,</span><br><span class="line">  &#96;name&#96; varchar(20) DEFAULT NULL,</span><br><span class="line">  &#96;age&#96; int(3) DEFAULT NULL,</span><br><span class="line">  &#96;dept_id&#96; int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4;</span><br><span class="line"></span><br><span class="line">CREATE INDEX idx_age_deptid_name ON emp(age,dept_id,name)</span><br></pre></td></tr></table></figure>
 <h3 id="explain关键字"><a href="#explain关键字" class="headerlink" title="explain关键字"></a>explain关键字</h3><p> <img src="/images/index/explain.png" alt="avatar"></p>
 <ul>
@@ -303,7 +185,7 @@
 <li>Using filesort：无法使用索引排序，使用效率低的文件排序</li>
 <li>Using temporary：使用临时表保存中间结果,常见于 order by 和 group by</li>
 <li>Using index condition：使用索引条件下推（5.6加入）</li>
-<li>Using index</li>
+<li>Using index：使用覆盖索引，不需要回表</li>
 <li>Using where</li>
 <li>Using join buffer</li>
 <li>impossible where</li>
@@ -315,7 +197,7 @@
 <p><img src="/images/index/left2.png" alt="avatar"></p>
 <p><img src="/images/index/left3.png" alt="avatar"></p>
 <p>图2由于不是从索引最左列开始，所以没有用到索引（key为NULL）<br>图3虽然用到了索引，但是跳过了dept_id，只用到了索引的一部分（key_len 5 &lt; 93）</p>
-<h3 id="不在索引列上做任何操作-索引不能是表达是的一部分"><a href="#不在索引列上做任何操作-索引不能是表达是的一部分" class="headerlink" title="不在索引列上做任何操作(索引不能是表达是的一部分)"></a>不在索引列上做任何操作(索引不能是表达是的一部分)</h3><p>计算、函数、(自动or手动)类型转换，会导致索引失效<br><img src="/images/index/oper1.png" alt="avatar"></p>
+<h3 id="不在索引列上做任何操作-索引不能是表达式的一部分"><a href="#不在索引列上做任何操作-索引不能是表达式的一部分" class="headerlink" title="不在索引列上做任何操作(索引不能是表达式的一部分)"></a>不在索引列上做任何操作(索引不能是表达式的一部分)</h3><p>计算、函数、(自动or手动)类型转换，会导致索引失效<br><img src="/images/index/oper1.png" alt="avatar"></p>
 <p><img src="/images/index/oper2.png" alt="avatar"></p>
 <p><img src="/images/index/oper3.png" alt="avatar"></p>
 <p>图1由于在索引上计算导致无法使用索引<br>图2由于在索引上使用了函数导致无法使用索引<br>图3由于在name上有类型转换（<strong>name为varchar，123没有引号</strong>），导致name失效（key_len 10&lt; 93）</p>
@@ -351,6 +233,129 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/06/25/%E7%B4%A2%E5%BC%95%EF%BC%881%EF%BC%89/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-索引（2）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/23/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/">索引（1)</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/23/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-06-23T08:43:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前缀索引和索引选择性"><a href="#前缀索引和索引选择性" class="headerlink" title="前缀索引和索引选择性"></a>前缀索引和索引选择性</h3><ul>
+<li><p>前缀索引<br>前缀索引是一种能使索引更小，更快的方式，即只索引开始的部分字符，这样可以节约索引空间，提高索引效率。<br>对于BLOB，TEXT，很长的VARCHAR列，必须使用前缀索引，因为MySQL不允许索引这些列的完整长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE dept add key(name(5))</span><br></pre></td></tr></table></figure>
+<p>但是这也会降低索引选择性。</p>
+</li>
+<li><p>索引选择性</p>
+</li>
+</ul>
+<p><strong>不重复的索引值和数据表的记录总数的比值，索引选择性越高则查询效率越高</strong>，因为选择性高的索引能让MySQL在查找时过滤更多的行。</p>
+<ul>
+<li>计算索引选择性<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">    count( DISTINCT LEFT ( NAME, 3 ) ) &#x2F; count( 1 ) sel3,</span><br><span class="line">    count( DISTINCT LEFT ( NAME, 4 ) ) &#x2F; count( 1 ) sel4,</span><br><span class="line">    count( DISTINCT LEFT ( NAME, 5 ) ) &#x2F; count( 1 ) sel5</span><br><span class="line">FROM</span><br><span class="line">    dept</span><br></pre></td></tr></table></figure>
+一般来说能够接近0.031，基本就可用。</li>
+</ul>
+<h3 id="多列索引及索引列的顺序"><a href="#多列索引及索引列的顺序" class="headerlink" title="多列索引及索引列的顺序"></a>多列索引及索引列的顺序</h3><ul>
+<li>多列索引<br>即索引包含多列，例如上篇文章的idx_age_deptid_name</li>
+</ul>
+<p>在多个列上建立独立的单列索引大部分情况并不能提高查询性能（查询条件不止一个的情况），因为早期MySQL只能使用其中一个单列索引，5.0后引入了索引合并（index merge）策略，即可以同时使用几个索引，并将结果合并，但是在合并操作上会耗费大量资源，且MySQL还遵循range优先原则，即一个索引的连续段包含所有符合查询条件的索引时，不使用索引合并。</p>
+<ul>
+<li>多列索引顺序经验法则<br>将选择性最高的列放到索引最前列</li>
+</ul>
+<h3 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h3><p>聚簇索引不是一宗索引类型，而是一种数据存储方式。<br>InnoDB的聚簇索引实际上在<strong>同一结构中保存了B-Tree索引和数据行</strong>，即当表有聚簇索引时，数据行实际存放在索引的叶子页中。</p>
+<p> <img src="/images/index/clustered_index.png" alt="avatar"></p>
+<p><strong>InnoDB一定会有聚簇索引</strong>，有主键时就是主键，没有定义主键，InnoDB会选择唯一的非空索引代替，如有这样的缩影，会隐式定义一个主键。</p>
+<ul>
+<li><p>缺点</p>
+<ul>
+<li>插入速度依赖插入顺序，如果不按照主键顺序加载数据，那么在加载完成后最好使用OPTIMIZE TABLE重新组织表。<br><img src="/images/index/insert2.png" alt="avatar"></li>
+</ul>
+<p><img src="/images/index/insert1.png" alt="avatar"></p>
+<ul>
+<li>更新聚簇索引列代价高，因为会强制将被更新的行移动到新位置。</li>
+<li>可能会有‘页分裂（page split）’问题，当行插入到某个已满的页中，存储引擎会将页分裂成两个页，这会导致表占用更多的空间。</li>
+<li><strong>InnoDB的二级索引会有‘回表’问题，因为二级索引叶子节点保存的是行的主键值，而不是‘行指针’，所以使用二级索引的查询需要先找到二级索引的叶子节点获取主键值，然后去聚簇索引查找对应的行。</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p>如果一个索引包含所有需要查询的字段的值，就称为覆盖索引，MySQL只能用B-TREE索引做覆盖索引，因为只有B-TREE索引存储了索引列的值。</p>
+<p>如果InnoDB的查询能用到覆盖索引，那么就可以避免‘回表’。</p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">高性能MySQL第3版</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/23/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/">展开全文 >></a>
         </p>
       
 
@@ -1432,14 +1437,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
@@ -1449,6 +1446,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">

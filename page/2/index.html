@@ -174,7 +174,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。</p>
+        <p>最近又对接微信，它对外开放数据的协议就是Oauth，把阮一峰大神的几篇文章摘取几段，加深对Oauth的理解。</p>
+<p>Oauth（Open Authorization）是一种授权机制，核心是通过颁发令牌给第三方应用，使其可以携带令牌访问数据。</p>
 <h3 id="令牌与密码的差异"><a href="#令牌与密码的差异" class="headerlink" title="令牌与密码的差异"></a>令牌与密码的差异</h3><ul>
 <li>令牌是短期的，<strong>到期后会失效</strong>，密码一般是长期的，用户不主动修改，不会改变。</li>
 <li>令牌可被颁发者主动撤销，而密码一般不可由他人控制。</li>
@@ -888,10 +889,17 @@
 <li>yml中加入如下配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  activiti:</span><br><span class="line">    check-process-definitions: true #自动检查、部署流程定义文件</span><br><span class="line">    database-schema-update: true #自动更新数据库结构</span><br><span class="line">    process-definition-location-prefix: classpath:&#x2F;processes&#x2F; #流程定义文件存放目录</span><br><span class="line">    db-history-used: true #启用历史,默认为false,不启用将不会创建历史表</span><br><span class="line">    history-level: full #历史级别</span><br></pre></td></tr></table></figure></li>
 <li>在resource下创建processes文件加，与process-definition-location-prefix对应</li>
 <li>某些版本，启动类需要排除SecurityAutoConfiguration<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication(exclude &#x3D; SecurityAutoConfiguration.class)</span><br></pre></td></tr></table></figure></li>
-<li>启动项目后会直接在数据创建25张表，并且自动部署bpmn
-        
-          <a class="article-more-a" href="/2020/01/15/activiti/#more">more >></a>
-        
+<li>启动项目后会直接在数据创建25张表，并且自动部署bpmn</li>
+</ul>
+<h3 id="表说明"><a href="#表说明" class="headerlink" title="表说明"></a>表说明</h3><ul>
+<li>搜索</li>
+<li>ACT_GE_* (GE-&gt;General)通用数据表</li>
+<li>ACT_RE_* (RE-&gt;Repository)流程定义存储表</li>
+<li>ACT_ID_* (ID-&gt;Identity)身份信息表</li>
+<li>ACT_RU_* (RU-&gt;Runtime)运行时数据表</li>
+<li>ACT_HI_* (HI-&gt;History)历史表</li>
+</ul>
+
       
 
 
@@ -1133,14 +1141,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
@@ -1150,6 +1150,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工作</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
