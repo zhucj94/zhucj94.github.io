@@ -21,7 +21,6 @@ spring:
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 ```
 + 启动项目后会直接在数据创建25张表，并且自动部署bpmn
-<!-- more -->
 
 ### 表说明
 + 搜索
