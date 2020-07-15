@@ -174,17 +174,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h3><p>TINYINT，SMALLINT，MEDIUMINT，INT，BIGINT，分别使用8，16，24，32，64位存储空间，范围从$-2^{N-1}$ 到 $2^{N-1} -1$ ，可选UNSIGNED属性，即不允许负，这样正数上线提高一倍。</p>
+        <h3 id="优化数据类型的原则"><a href="#优化数据类型的原则" class="headerlink" title="优化数据类型的原则"></a>优化数据类型的原则</h3><ul>
+<li><p>更小的通常更好<br>更小的数据类型通常更快，因为其占用更少的磁盘，内存，CPU缓存，处理时需要的CPU周期也更少。</p>
+</li>
+<li><p>简单就好<br>简单的数据类型的操作通常需要更少的CPU，例如整型比字符串操作代价低，因为字符集和排序规则使字符比较比整型比较更复杂。</p>
+</li>
+<li><p>尽量避免NULL<br>可为NULL的列使索引，索引统计和值的比较更为复杂，当可为NULL的列被索引时，每个索引需额外的一个字节。</p>
+</li>
+</ul>
+<h3 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h3><p>TINYINT，SMALLINT，MEDIUMINT，INT，BIGINT，分别使用8，16，24，32，64位存储空间，范围从$-2^{N-1}$ 到 $2^{N-1} -1$ ，可选UNSIGNED属性，即不允许负，这样正数上线提高一倍。</p>
 <p><strong>指定的宽度通常是没有意义的，例如INT(11)，它不会限制值的合法范围，只规定MySQL交互工具来显示字符个数。</strong></p>
-<h3 id="实数类型"><a href="#实数类型" class="headerlink" title="实数类型"></a>实数类型</h3><p>DECIMAL，FLOAT，DOUBLE<br>DECIMAL用于存储精确的小数，5.0以后支持精确计算。通常DECIMAL比FLOAT，DOUBLE占用更多的空间。<br>应为需要额外的空间和计算开销，<strong>尽量只在对小数进行精确计算时使用DECIMAL（例如钱），其余情况使用浮点型即可，在数据量比较大时，可以考虑使用BIGINT代替DECIMAL，将存储的数据乘相应位数存储。</strong></p>
+<h3 id="实数类型"><a href="#实数类型" class="headerlink" title="实数类型"></a>实数类型</h3><p>DECIMAL，FLOAT，DOUBLE<br>DECIMAL用于存储精确的小数，5.0以后支持精确计算。通常DECIMAL比FLOAT，DOUBLE占用更多的空间。因为需要额外的空间和计算开销，<strong>尽量只在对小数进行精确计算时使用DECIMAL（例如钱），其余情况使用浮点型即可，在数据量比较大时，可以考虑使用BIGINT代替DECIMAL，将存储的数据乘相应位数存储。</strong></p>
 <h3 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h3><ul>
-<li>VARCHAR 与 CHAR</li>
+<li>VARCHAR 与 CHAR<br>VARCHAR<strong>是变长的</strong>，它仅需要使用必要的空间，它需要使用1或2个字节表示字符串的长度，它节约了空间，但是UPDATE可能使行比原来更长，占用的空间更大，如果页内没有空余的空间存储，那么InnoDB需要分裂页使行放进页中。</li>
 </ul>
-<p>VARCHAR是变长的，它仅需要使用必要的空间，它需要使用1或2个字节表示字符串的长度，它节约了空间，但是UPDATE可能使行比原来更长，占用的空间更大，如果页内没有空余的空间存储，那么InnoDB需要分裂页使行放进页中。</p>
-<p>CHAR是定长的，MySQL总是根据定义的字符串长度分配足够的空间，MySQL会删除所有末尾的空格，它适合存储所有值都接近同一长度，例如密码的MD5值。</p>
+<p>CHAR是<strong>定长的</strong>，MySQL总是根据定义的字符串长度分配足够的空间，MySQL会<strong>删除末尾的空格</strong>，它适合存储所有值都接近同一长度，例如密码的MD5值。</p>
 <ul>
-<li>BLOG 与 TEXT</li>
+<li>BLOB 与 TEXT<br>BLOB与TEXT仅有大的不同是BLOB是二进制，而TEXT是字符集，TEXT有字符集和排序规则，而BLOB没有。</li>
 </ul>
+<p>MySQL只对BLOB和TEXT的最前max_sort_length字节排序，而不是整个字符串。</p>
+<ul>
+<li>ENUM<br>ENUM把一些不重复的字符串存储成一个预定义的集合，MySQL存储ENUM时非常紧凑，会将值压缩到一个或两个字节中。<strong>MySQL实际存储ENUM为整数，而不是字符串，表示其在集合中的位置。</strong></li>
+</ul>
+<p>ENUM按照存储的整数进行排序，而不是定义的字符串。</p>
+<p>添加或删除字符串只能用ALTER TABLE，对于未来会发生改变的字符串，使用枚举不太好。<br>ENUM与VARCHAR进行关联查询时，效率会变低，可能原因是ENUM关联时进行了一次转化。</p>
 
       
 
@@ -1423,11 +1436,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
+                <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1435,7 +1448,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
               </li>
              
               <li class="article-tag-list-item">
