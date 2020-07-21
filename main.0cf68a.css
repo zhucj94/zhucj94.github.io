@@ -806,7 +806,7 @@ body {
 } */
 /* 这个字体不错font-family: STCaiyun,STXingkai; */
 .left-col #header .header-menu {
-    font-family: STCaiyun,STXingkai;
+    font-family: lucida grande, lucida sans unicode, lucida, helvetica, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
     line-height: 31px;
     text-transform: uppercase;
     float: none;
@@ -821,7 +821,7 @@ body {
     cursor:default
 }
 .left-col #header .header-menu li a {
-    font-size:20px;
+    font-size:15px;
     min-width:300px
 }
 .left-col #header .header-smart-menu {
