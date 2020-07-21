@@ -5,7 +5,7 @@ tags: [effective java 3rd , 读书笔记]
 declare: true
 ---
 ### 使用静态工厂方法替代构造
-``` 
+``` java
 public static Boolean valueOf(boolean b) {
     return b ? Boolean.TRUE : Boolean.FALSE;
 }
@@ -15,7 +15,7 @@ public static Boolean valueOf(boolean b) {
 + 静态工厂方法可以返回其返回类型的子类型对象。
 <!-- more -->
 ### 当构造方法参数过多时使用builder模式
-```
+```java
 public class NutritionFacts {
     private final int servingSize;
     private final int servings;
@@ -70,7 +70,7 @@ public class NutritionFacts {
 ### 使用私有构造方法执行非实例化
 + 实用类（utility classes）（例如Collections）不是设计用来被实例化的：一个实例是没有意义的。
 + 在没有显式构造方法的情况下，编译器提供了一个公共的、无参的默认构造方法，可以通过包含一个私有构造方法来实现类的非实例化
-```
+```java
 public class UtilityClass {
     private UtilityClass() {
         throw new AssertionError();
@@ -104,7 +104,7 @@ public class SpellChecker {
 
 ### 避免创建不必要对象
 + 在需要时重用一个对象而不是创建一个新的相同功能对象通常是恰当的。
-```
+```java
 String.matches每次都会创建一个Pattren对象,创建Pattern实例是昂贵的，因为它需要将正则表达式编译成有限状态机
 static boolean isRomanNumeral(String s) {
     return s.matches("^(?=.)M*(C[MD]|D?C{0,3})"
@@ -116,7 +116,7 @@ static boolean isRomanNumeral(String s) {
     return ROMAN.matcher(s).matches();
 }
 ```
-```
+```java
 变量 sum 被声明成了Long 而不是 long ，这意味着程序构造了大量不必要的 Long 实例
 private static long sum() {
     Long sum = 0L;
