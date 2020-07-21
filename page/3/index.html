@@ -154,6 +154,101 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-activiti" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/01/15/activiti/">activiti</a>
+    </h1>
+  
+
+        
+        <a href="/2020/01/15/activiti/" class="archive-article-date">
+  	<time datetime="2020-01-15T09:43:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="与SpringBoot整合"><a href="#与SpringBoot整合" class="headerlink" title="与SpringBoot整合"></a>与SpringBoot整合</h3><ul>
+<li>yml中加入如下配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  activiti:</span><br><span class="line">    check-process-definitions: true #自动检查、部署流程定义文件</span><br><span class="line">    database-schema-update: true #自动更新数据库结构</span><br><span class="line">    process-definition-location-prefix: classpath:&#x2F;processes&#x2F; #流程定义文件存放目录</span><br><span class="line">    db-history-used: true #启用历史,默认为false,不启用将不会创建历史表</span><br><span class="line">    history-level: full #历史级别</span><br></pre></td></tr></table></figure></li>
+<li>在resource下创建processes文件加，与process-definition-location-prefix对应</li>
+<li>某些版本，启动类需要排除SecurityAutoConfiguration<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication(exclude &#x3D; SecurityAutoConfiguration.class)</span><br></pre></td></tr></table></figure></li>
+<li>启动项目后会直接在数据创建25张表，并且自动部署bpmn</li>
+</ul>
+<h3 id="表说明"><a href="#表说明" class="headerlink" title="表说明"></a>表说明</h3><ul>
+<li>搜索</li>
+<li>ACT_GE_* (GE-&gt;General)通用数据表</li>
+<li>ACT_RE_* (RE-&gt;Repository)流程定义存储表</li>
+<li>ACT_ID_* (ID-&gt;Identity)身份信息表</li>
+<li>ACT_RU_* (RU-&gt;Runtime)运行时数据表</li>
+<li>ACT_HI_* (HI-&gt;History)历史表</li>
+</ul>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">activiti</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工作</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/01/15/activiti/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-内部类-effective-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -198,11 +293,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -356,19 +451,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
+                <a href="javascript:void(0)" class="js-tag color3">MyBatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">

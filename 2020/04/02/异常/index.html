@@ -15,10 +15,10 @@
 <meta property="og:site_name" content="小朱的blog">
 <meta property="og:description" content="对可恢复的情况使用受检异常，对编程错误使用运行时异常 如果期望调用者能够合理的恢复程序运行，对于这种情况就应该使用受检异常。 用运行时异常来表明编程错误，例如数组的下标值在0到长度-1之间，ArrayIndexOutOfBoundsException表明违反了这个前提。按照惯例，错误（Error）往往被JVM保留下来使用，你实现的所有非受检的 throwable 都应该是 RuntimeExcep">
 <meta property="article:published_time" content="2020-04-02T06:22:14.000Z">
-<meta property="article:modified_time" content="2020-04-05T06:52:59.301Z">
+<meta property="article:modified_time" content="2020-07-21T07:49:58.135Z">
 <meta property="article:author" content="飞光">
-<meta property="article:tag" content="effective java 3rd">
 <meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="effective java 3rd">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="小朱的blog" type="application/atom+xml">
@@ -188,20 +188,20 @@
 <li>在谨慎使用的前提之下，受检异常可以提升程序的可读性；过分使用受检异常使api不方便，api必须位于try块中或者方法向上抛出异常。</li>
 <li>可以使用下面两种方式部分替代受检异常。<ul>
 <li>返回一个Optional，方法不抛出异常，只是返回一个空Optional，缺点是方法无法返回额外信息，而异常可以。</li>
-<li>将受检异常变为非受检异常，把这个抛出异常的方法分成两个方法，其中第一个方法返回一个boolean值，表明是否应该抛出异常，第二个方法正常执行，抛出非受检异常。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    obj.action( args );</span><br><span class="line">&#125; catch ( TheCheckedException e ) &#123;</span><br><span class="line">... &#x2F;* Handle exceptional condition *&#x2F;</span><br><span class="line">&#125;</span><br><span class="line">重构为下面</span><br><span class="line">if ( obj.actionPermitted( args ) ) &#123;</span><br><span class="line">    obj.action( args );</span><br><span class="line">&#125; else &#123;</span><br><span class="line">... &#x2F;* Handle exceptional condition *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>将受检异常变为非受检异常，把这个抛出异常的方法分成两个方法，其中第一个方法返回一个boolean值，表明是否应该抛出异常，第二个方法正常执行，抛出非受检异常。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    obj.action( args );</span><br><span class="line">&#125; <span class="keyword">catch</span> ( TheCheckedException e ) &#123;</span><br><span class="line">... <span class="comment">/* Handle exceptional condition */</span></span><br><span class="line">&#125;</span><br><span class="line">重构为下面</span><br><span class="line"><span class="keyword">if</span> ( obj.actionPermitted( args ) ) &#123;</span><br><span class="line">    obj.action( args );</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">... <span class="comment">/* Handle exceptional condition */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 这种重构并非总是恰当的，如果对象将在缺少外部同步的情况下被并发访问，或者可被外界改变状态，这种重构就是不恰当的，因为在actionPermitted和action这两个调用的时间间隔之中，对象的状态有可能会发生变化。如果单独的actionPermitted方法必须重复action方法的工作，出于性能的考虑，这种API重构就不值得去做。</li>
 </ul>
 </li>
 </ul>
 <h3 id="抛出与抽象对应的异常"><a href="#抛出与抽象对应的异常" class="headerlink" title="抛出与抽象对应的异常"></a>抛出与抽象对应的异常</h3><ul>
-<li>如果方法抛出的异常与它所执行的任务没有明显的联系，这种情形将会使人不知所措。当方法传递由低层抛出的异常时，往往会发生这种情况，为了避免这个问题，更高层的实现应该<strong><em>捕获低层的异常，同时抛出可以按照高层抽象进行解释的异常。这种做法称为异常转译(exception translation)</em></strong>，例如AbstractSequentialList.get(index)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">        return listIterator(index).next();</span><br><span class="line">    &#125; catch (NoSuchElementException exc) &#123;</span><br><span class="line">        throw new IndexOutOfBoundsException(&quot;Index: &quot;+index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>如果方法抛出的异常与它所执行的任务没有明显的联系，这种情形将会使人不知所措。当方法传递由低层抛出的异常时，往往会发生这种情况，为了避免这个问题，更高层的实现应该<strong><em>捕获低层的异常，同时抛出可以按照高层抽象进行解释的异常。这种做法称为异常转译(exception translation)</em></strong>，例如AbstractSequentialList.get(index)。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> listIterator(index).next();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchElementException exc) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Index: "</span>+index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li><strong><em>尽管异常转译与不加选择地从低层传递异常的做法相比有所改进，但是也不能滥用它。</em></strong>处理来自低层异常的最好做法是在调用低层方法之前确保它们会成功执行，从而避免它们抛出异常，例如给低层传递参数之前，检查更高层方法的参数的有效性。其次的做法是，让更高层来悄悄地处理这些异常，从而将高层方法的调用者与低层的问题隔离开来，例如日志打印。</li>
 </ul>
 <h3 id="保证失败原子性"><a href="#保证失败原子性" class="headerlink" title="保证失败原子性"></a>保证失败原子性</h3><ul>
 <li>一般而言，<strong><em>失败的方法调用应该使对象保持在被调用之前的状态。</em></strong>具有这种属性的方法被称为具有失败原子性 (failure atomic)。</li>
 <li>有5中方法保持失败原子性<ul>
 <li>使用不可变对象。</li>
-<li>在执行操作之前检查参数的有效性，例如Arraylist.get(index)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public E get(int index) &#123;</span><br><span class="line">  rangeCheck(index);</span><br><span class="line">  return elementData(index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void rangeCheck(int index) &#123;</span><br><span class="line">  if (index &gt;&#x3D; size)</span><br><span class="line">      throw new IndexOutOfBoundsException(outOfBoundsMsg(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>在执行操作之前检查参数的有效性，例如Arraylist.get(index)。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">  rangeCheck(index);</span><br><span class="line">  <span class="keyword">return</span> elementData(index);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">rangeCheck</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (index &gt;= size)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(outOfBoundsMsg(index));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 <li>调整计算处理过程的顺序，使得任何可能会失败的计算部分都在对象状态被修改之前发生。</li>
 <li>在对象的一份临时拷贝上执行操作，当操作完成之后再用临时拷贝中的结果代替对象的内容。</li>
 <li>编写一段恢复代码 (recoverycode)，由它来拦截操作过程中发生的失败，以及便对象回滚到操作开始之前的状态上。</li>
@@ -242,11 +242,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -470,19 +470,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
+                <a href="javascript:void(0)" class="js-tag color3">MyBatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">

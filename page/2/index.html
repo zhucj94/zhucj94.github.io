@@ -154,6 +154,89 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-InnoDB快照读与当前读" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/04/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">InnoDB快照读与当前读</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/04/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/" class="archive-article-date">
+  	<time datetime="2020-05-04T13:51:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="快照读（Consistent-Nonlocking-Reads）"><a href="#快照读（Consistent-Nonlocking-Reads）" class="headerlink" title="快照读（Consistent Nonlocking Reads）"></a>快照读（Consistent Nonlocking Reads）</h3><p>A consistent read means that InnoDB uses multi-versioning to present to a query a snapshot of the database at a point in time.（快照读是InnoDB使用多版本来查询某个时间点的快照）</p>
+<p>Consistent read is the default mode in which InnoDB processes SELECT statements in READ COMMITTED and REPEATABLE READ isolation levels. A consistent read does not set any locks on the tables it accesses, and therefore other sessions are free to modify those tables at the same time a consistent read is being performed on the table.（快照读是RR和RC下处理SELECT的默认模式，快照读不在访问的表上设置任何锁，因此其他会话可以自由的修改这些表。）</p>
+<h3 id="当前读（Locking-Reads）"><a href="#当前读（Locking-Reads）" class="headerlink" title="当前读（Locking Reads）"></a>当前读（Locking Reads）</h3><p>If you query data and then insert or update related data within the same transaction, the regular SELECT statement does not give enough protection. Other transactions can update or delete the same rows you just queried. （在同一事务中查询数据，然后更新或修改相关数据，快照读不能提供足够保护，其他事务可以修改或删除刚查询的行。）</p>
+<p>InnoDB提供了 <strong>SELECT … LOCK IN SHARE MODE（共享锁）</strong>和 <strong>SELECT … FOR UPDATE（排他锁）</strong>提供额外的安全。</p>
+<p>参考：<br><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-consistent-read.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.6/en/innodb-locking-reads.html</a></p>
+
+      
+
+
+  <div class="declare" hidden="hidden"></div>
+
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/04/InnoDB%E5%BF%AB%E7%85%A7%E8%AF%BB%E4%B8%8E%E5%BD%93%E5%89%8D%E8%AF%BB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-事务" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -518,11 +601,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -604,11 +687,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -689,11 +772,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -774,11 +857,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -840,12 +923,12 @@
       
         <h3 id="不要使用原始类型"><a href="#不要使用原始类型" class="headerlink" title="不要使用原始类型"></a>不要使用原始类型</h3><ul>
 <li>一个类或接口，它的声明有一个或多个类型参数（type parameters ），统称为泛型类型（generic types）。没有任何类型参数的泛型类型称为原始类型（List是List &lt;T&gt;的原始类型）。它们的存在主要是为了与没有泛型之前的代码相兼容。</li>
-<li>使用原始类型是合法的，但如果你使用原始类型，则会丧失泛型的所有安全性和表达上的优势<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">private final List stamps &#x3D; ... ; &#x2F;&#x2F;警告</span><br><span class="line">stamps.add(new Coin());&#x2F;&#x2F; 如果有泛型，此处无法编译</span><br><span class="line">(Stamp)stamps.get(0);&#x2F;&#x2F;编译通过，运行ClassCastException</span><br></pre></td></tr></table></figure>
+<li>使用原始类型是合法的，但如果你使用原始类型，则会丧失泛型的所有安全性和表达上的优势<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> List stamps = ... ; <span class="comment">//警告</span></span><br><span class="line">stamps.add(<span class="keyword">new</span> Coin());<span class="comment">// 如果有泛型，此处无法编译</span></span><br><span class="line">(Stamp)stamps.get(<span class="number">0</span>);<span class="comment">//编译通过，运行ClassCastException</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="列表优于数组"><a href="#列表优于数组" class="headerlink" title="列表优于数组"></a>列表优于数组</h3><p>1.1. 数组是协变的(covariant)，<strong>即如果Child是Super的子类型，那么Child[]亦是Super[]的子类型。</strong><br>1.2. 泛型是不变的(invariant)，<strong>对于任意两种不同的类型Type1，Type2，List<Type1>既不是List<Type>的子类型也不是父类型。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;运行时会抛出ArrayStoreException</span><br><span class="line">Object[] objectArray &#x3D; new Long[1];</span><br><span class="line">objectArray[0] &#x3D; &quot;I don&#39;t fit in&quot;;</span><br><span class="line">&#x2F;&#x2F;无法编译</span><br><span class="line">List&lt;Object&gt; ol &#x3D; new ArrayList&lt;Long&gt;();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//运行时会抛出ArrayStoreException</span></span><br><span class="line">Object[] objectArray = <span class="keyword">new</span> Long[<span class="number">1</span>];</span><br><span class="line">objectArray[<span class="number">0</span>] = <span class="string">"I don't fit in"</span>;</span><br><span class="line"><span class="comment">//无法编译</span></span><br><span class="line">List&lt;Object&gt; ol = <span class="keyword">new</span> ArrayList&lt;Long&gt;();</span><br></pre></td></tr></table></figure>
         
           <a class="article-more-a" href="/2020/03/19/%E6%B3%9B%E5%9E%8B-effective%20java/#more">more >></a>
         
@@ -865,11 +948,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -929,7 +1012,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="使用静态工厂方法替代构造"><a href="#使用静态工厂方法替代构造" class="headerlink" title="使用静态工厂方法替代构造"></a>使用静态工厂方法替代构造</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static Boolean valueOf(boolean b) &#123;</span><br><span class="line">    return b ? Boolean.TRUE : Boolean.FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="使用静态工厂方法替代构造"><a href="#使用静态工厂方法替代构造" class="headerlink" title="使用静态工厂方法替代构造"></a>使用静态工厂方法替代构造</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Boolean <span class="title">valueOf</span><span class="params">(<span class="keyword">boolean</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b ? Boolean.TRUE : Boolean.FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>静态工厂方法是有名字的，在类中需要具有<strong>相同签名(方法的名称和参数类型)</strong>的多个构造方法时，用静态工厂方法替换构造，并仔细选择名字来突出它们差异。</li>
 <li>静态工厂方法不需要每次调用时都创建一个对象，这是享元模式（Flyweight）的基础，如果经常请求等价对象，那么将极大的提高性能。</li>
@@ -953,11 +1036,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">读书笔记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">effective java 3rd</a>
         		</li>
       		
 		</ul>
@@ -968,101 +1051,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/02/23/%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1-effective%20java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-activiti" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/15/activiti/">activiti</a>
-    </h1>
-  
-
-        
-        <a href="/2020/01/15/activiti/" class="archive-article-date">
-  	<time datetime="2020-01-15T09:43:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="与SpringBoot整合"><a href="#与SpringBoot整合" class="headerlink" title="与SpringBoot整合"></a>与SpringBoot整合</h3><ul>
-<li>yml中加入如下配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  activiti:</span><br><span class="line">    check-process-definitions: true #自动检查、部署流程定义文件</span><br><span class="line">    database-schema-update: true #自动更新数据库结构</span><br><span class="line">    process-definition-location-prefix: classpath:&#x2F;processes&#x2F; #流程定义文件存放目录</span><br><span class="line">    db-history-used: true #启用历史,默认为false,不启用将不会创建历史表</span><br><span class="line">    history-level: full #历史级别</span><br></pre></td></tr></table></figure></li>
-<li>在resource下创建processes文件加，与process-definition-location-prefix对应</li>
-<li>某些版本，启动类需要排除SecurityAutoConfiguration<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication(exclude &#x3D; SecurityAutoConfiguration.class)</span><br></pre></td></tr></table></figure></li>
-<li>启动项目后会直接在数据创建25张表，并且自动部署bpmn</li>
-</ul>
-<h3 id="表说明"><a href="#表说明" class="headerlink" title="表说明"></a>表说明</h3><ul>
-<li>搜索</li>
-<li>ACT_GE_* (GE-&gt;General)通用数据表</li>
-<li>ACT_RE_* (RE-&gt;Repository)流程定义存储表</li>
-<li>ACT_ID_* (ID-&gt;Identity)身份信息表</li>
-<li>ACT_RU_* (RU-&gt;Runtime)运行时数据表</li>
-<li>ACT_HI_* (HI-&gt;History)历史表</li>
-</ul>
-
-      
-
-
-  <div class="declare" hidden="hidden"></div>
-
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">activiti</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工作</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/01/15/activiti/">展开全文 >></a>
         </p>
       
 
@@ -1206,19 +1194,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
+                <a href="javascript:void(0)" class="js-tag color3">MyBatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">

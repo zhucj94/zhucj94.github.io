@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="https://zhucj94.github.io">
   <title>MySQL索引（2） | 小朱的blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文探讨多列索引（类型为B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于下表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) D">
+  <meta name="description" content="本文探讨多列索引（类型为B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于下表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) DEFAULT NULL,  &#96;age&#96; int(3) DEFAU">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL索引（2）">
 <meta property="og:url" content="https://zhucj94.github.io/2020/06/25/%E7%B4%A2%E5%BC%95%EF%BC%882%EF%BC%89/index.html">
 <meta property="og:site_name" content="小朱的blog">
-<meta property="og:description" content="本文探讨多列索引（类型为B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于下表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) D">
+<meta property="og:description" content="本文探讨多列索引（类型为B-TREE）对哪些查询有效Mysql版本为5.7下面的sql均是基于下表~ 12345678910CREATE TABLE &#96;emp&#96; (  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,  &#96;num&#96; int(11) NOT NULL,  &#96;name&#96; varchar(20) DEFAULT NULL,  &#96;age&#96; int(3) DEFAU">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/explain.png">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/left1.png">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/left2.png">
@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://zhucj94.github.io/images/index/isnotnull.png">
 <meta property="og:image" content="https://zhucj94.github.io/images/index/like.png">
 <meta property="article:published_time" content="2020-06-25T12:53:06.000Z">
-<meta property="article:modified_time" content="2020-07-14T13:57:10.578Z">
+<meta property="article:modified_time" content="2020-07-21T07:48:13.462Z">
 <meta property="article:author" content="飞光">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -190,7 +190,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>本文探讨<strong>多列索引（类型为B-TREE）</strong>对哪些查询有效<br>Mysql版本为5.7<br>下面的sql均是基于下表~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;emp&#96; (</span><br><span class="line">  &#96;id&#96; int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line">  &#96;num&#96; int(11) NOT NULL,</span><br><span class="line">  &#96;name&#96; varchar(20) DEFAULT NULL,</span><br><span class="line">  &#96;age&#96; int(3) DEFAULT NULL,</span><br><span class="line">  &#96;dept_id&#96; int(11) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;id&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4;</span><br><span class="line"></span><br><span class="line">CREATE INDEX idx_age_deptid_name ON emp(age,dept_id,name)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`emp`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`num`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">3</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`dept_id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> idx_age_deptid_name <span class="keyword">ON</span> emp(age,dept_id,<span class="keyword">name</span>)</span><br></pre></td></tr></table></figure>
 <h3 id="explain关键字"><a href="#explain关键字" class="headerlink" title="explain关键字"></a>explain关键字</h3><p> <img src="/images/index/explain.png" alt="avatar"></p>
 <ul>
 <li>possible_keys：显示可能应用在这张表中的索引，一个或多个，但不一定被查询实际使用。</li>
@@ -478,19 +478,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">读书笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
+                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">高性能MySQL第3版</a>
+                <a href="javascript:void(0)" class="js-tag color3">MyBatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">effective java 3rd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Oauth2.0</a>
               </li>
              
               <li class="article-tag-list-item">
