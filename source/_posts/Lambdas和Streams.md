@@ -1,8 +1,11 @@
 ---
 title: Lambdas和Streams
-date: 2020-03-28 17:40:14
-tags: [effective java 3rd , 读书笔记]
+tags:
+  - effective java 3rd
+  - 读书笔记
 declare: true
+abbrlink: '33749838'
+date: 2020-03-28 17:40:14
 ---
 ###  优先使用标准的函数式接口
 + 有了lambda后，编写 API 的最佳实践已经发生了很大的变化，例如模板方法模式，其中一个子类重写原始方法以专门化其父类的行为，变得没有那么吸引人。现代替代的选择是提供一个静态工厂或构造方法来接受函数对象以达到相同的效果。

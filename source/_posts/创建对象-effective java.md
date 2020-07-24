@@ -1,8 +1,11 @@
 ---
 title: 创建对象-effective java
-date: 2020-02-23 14:00:53
-tags: [effective java 3rd , 读书笔记]
+tags:
+  - effective java 3rd
+  - 读书笔记
 declare: true
+abbrlink: bff37142
+date: 2020-02-23 14:00:53
 ---
 ### 使用静态工厂方法替代构造
 ``` java

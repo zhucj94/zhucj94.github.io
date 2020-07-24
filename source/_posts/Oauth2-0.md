@@ -1,8 +1,9 @@
 ---
 title: Oauth2.0
-date: 2020-04-30 16:48:37
 tags: Oauth2.0
 declare: true
+abbrlink: 1b404596
+date: 2020-04-30 16:48:37
 ---
 最近又对接微信，它对外开放数据的协议就是Oauth，把阮一峰大神的几篇文章摘取几段，加深对Oauth的理解。
 

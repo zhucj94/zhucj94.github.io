@@ -1,8 +1,11 @@
 ---
 title: 内部类-effective java
-date: 2020-01-13 15:58:41
-tags: [effective java 3rd , 读书笔记]
+tags:
+  - effective java 3rd
+  - 读书笔记
 declare: true
+abbrlink: d9b75b51
+date: 2020-01-13 15:58:41
 ---
 ### 非静态内部类
 + 不可能在没有宿主实例的情况下创建非静态成员类的实例。

@@ -1,8 +1,9 @@
 ---
 title: InnoDB之缓冲池(buffer pool)
-date: 2020-06-11 22:20:10
 tags: MySQL
 declare: true
+abbrlink: 3e77f45e
+date: 2020-06-11 22:20:10
 ---
 MySQL作为一个存储系统，具有 ***buffer pool*** 机制，以避免每次查询都进行磁盘IO。
 

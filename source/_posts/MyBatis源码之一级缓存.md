@@ -1,8 +1,9 @@
 ---
 title: MyBatis源码之一级缓存
-date: 2020-07-19 17:39:32
 tags: MyBatis
 declare: true
+abbrlink: 7dd9b5ec
+date: 2020-07-19 17:39:32
 ---
 ### 前言
 在阅读MyBatis源码前，建议先去github上clone MyBatis以及MyBatis parent源码，在本地搭建测试环境，以供idea在源码中打断点调试。
@@ -24,6 +25,7 @@ public class PerpetualCache implements Cache {
   ...
 }
 ```
+<!--more-->
 
 localCache的key是CacheKey对象
 ```java
@@ -146,3 +148,33 @@ public class CacheKey implements Cloneable, Serializable {
 2. **相同sql，参数**
 3. **相同查询范围，即偏移量，limit**
 4. **相同的session**，此代码中未体现，但是localCache在BaseExecutor中，而BaseExecutor的创建是在初始化session时（入口是SqlSessionFactory.opensession，具体方法是Configuration.newExecutor）
+
+### 缓存清除条件
+PerpetualCache通过clear方法来清空缓存
+```java
+public class PerpetualCache implements Cache {
+  ...
+  @Override
+  public void clear() {
+    cache.clear();
+  }
+  ...
+}
+```
+调用情况如下图
+![avatar](/images/mybatis/first_cache_clear.png)
+1. 回滚
+2. 提交
+3. 修改
+4. 查询，当设置flushCache="true"时，默认为false
+```java
+  @Override
+  public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+    ...
+    if (queryStack == 0 && ms.isFlushCacheRequired()) {
+      clearLocalCache();
+    }
+    ...
+  }
+```
+**由于事务提交会清除缓存，所以要用到以及缓存，还需要在同一事务中**

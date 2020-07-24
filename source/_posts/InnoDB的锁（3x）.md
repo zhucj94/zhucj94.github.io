@@ -1,8 +1,9 @@
 ---
 title: InnoDB的锁（3x）
-date: 2020-05-16 16:15:16
 tags: MySQL
 declare: true
+abbrlink: 5533cdb0
+date: 2020-05-16 16:15:16
 ---
 ### 行锁策略
 1. 加锁的基本单位是临键锁。（记录锁+间隙锁，左开右闭区间）

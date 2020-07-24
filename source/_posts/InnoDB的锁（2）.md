@@ -1,8 +1,9 @@
 ---
 title: InnoDB的锁（2）
-date: 2020-05-12 21:18:18
 tags: MySQL
 declare: true
+abbrlink: be44ecbc
+date: 2020-05-12 21:18:18
 ---
 
 ### 共享/排他锁（Shared and Exclusice Locks）

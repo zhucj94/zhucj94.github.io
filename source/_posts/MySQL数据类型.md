@@ -1,9 +1,13 @@
 ---
 title: MySQL数据类型
-date: 2020-07-14 21:56:29
-tags: [MySQL , 读书笔记 , 高性能MySQL第3版]
+tags:
+  - MySQL
+  - 读书笔记
+  - 高性能MySQL第3版
 declare: true
 mathjax: true
+abbrlink: 47519a60
+date: 2020-07-14 21:56:29
 ---
 ### 优化数据类型的原则
 + 更小的通常更好

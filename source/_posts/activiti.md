@@ -1,8 +1,11 @@
 ---
 title: activiti
-date: 2020-01-15 17:43:01
-tags: [activiti,工作]
+tags:
+  - activiti
+  - 工作
 declare: true
+abbrlink: b1c3193e
+date: 2020-01-15 17:43:01
 ---
 ### 与SpringBoot整合
 + yml中加入如下配置

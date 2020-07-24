@@ -1,8 +1,9 @@
 ---
 title: InnoDB快照读与当前读
-date: 2020-05-04 21:51:31
 tags: MySQL
 declare: true
+abbrlink: cdee20fb
+date: 2020-05-04 21:51:31
 ---
 ### 快照读（Consistent Nonlocking Reads）
 A consistent read means that InnoDB uses multi-versioning to present to a query a snapshot of the database at a point in time.（快照读是InnoDB使用多版本来查询某个时间点的快照）

@@ -1,8 +1,9 @@
 ---
 title: InnoDB的锁（1）自增锁（AUTO-INC Locks）
-date: 2020-05-10 21:27:21
 tags: MySQL
 declare: true
+abbrlink: 32458d66
+date: 2020-05-10 21:27:21
 ---
 **本文不介绍MySQL的读表锁（LOCK TABLE table_name READ）和写表锁（LOCK TABLE table_name WRITE**
 

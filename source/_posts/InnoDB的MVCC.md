@@ -1,8 +1,9 @@
 ---
-title: 'InnoDB的MVCC（Multi Versioning Concurrency Control）'
-date: 2020-05-05 20:25:29
+title: InnoDB的MVCC（Multi Versioning Concurrency Control）
 tags: MySQL
 declare: true
+abbrlink: b93dd38a
+date: 2020-05-05 20:25:29
 ---
 **MVCC主要是为了提高数据库并发性能，用更好的方式去处理读-写冲突**，做到即使有读写冲突时，也能做到不加锁，非阻塞并发读。（读指快照读）
 ###  定义

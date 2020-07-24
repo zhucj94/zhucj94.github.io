@@ -1,8 +1,11 @@
 ---
 title: 泛型
-date: 2020-03-19 13:42:15
-tags: [effective java 3rd , 读书笔记]
+tags:
+  - effective java 3rd
+  - 读书笔记
 declare: true
+abbrlink: 7678a22a
+date: 2020-03-19 13:42:15
 ---
 ### 不要使用原始类型
 + 一个类或接口，它的声明有一个或多个类型参数（type parameters ），统称为泛型类型（generic types）。没有任何类型参数的泛型类型称为原始类型（List是List &lt;T&gt;的原始类型）。它们的存在主要是为了与没有泛型之前的代码相兼容。
