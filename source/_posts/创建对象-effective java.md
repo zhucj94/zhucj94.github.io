@@ -17,6 +17,7 @@ public static Boolean valueOf(boolean b) {
 + 静态工厂方法不需要每次调用时都创建一个对象，这是享元模式（Flyweight）的基础，如果经常请求等价对象，那么将极大的提高性能。
 + 静态工厂方法可以返回其返回类型的子类型对象。
 <!-- more -->
+
 ### 当构造方法参数过多时使用builder模式
 ```java
 public class NutritionFacts {

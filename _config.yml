@@ -166,3 +166,32 @@ feed:
   type: atom
   path: atom.xml
   limit: 20 # 最新的20篇文章
+
+# Markdown-it config
+## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki
+markdown:
+  render:
+    html: true          # 是否对HTML标签进行解析，false时HTML将按照原样输出
+    xhtmlOut: false     # 是否需要满足严格的XHTML格式，换行为<br />
+    breaks: true
+    linkify: true
+    typographer: true
+    quotes: '“”‘’'
+  plugins:
+    - markdown-it-abbr
+    - markdown-it-footnote
+    - markdown-it-ins
+    - markdown-it-sub
+    - markdown-it-sup
+    - markdown-it-emoji  # add emoji
+  anchors:
+    # Minimum level for ID creation. (Ex. h2 to h6)
+    level: 2
+    # A suffix that is prepended to the number given if the ID is repeated.
+    collisionSuffix: 'v'
+    # If `true`, creates an anchor tag with a permalink besides the heading.
+    permalink: false
+    # Class used for the permalink anchor tag.
+    permalinkClass: header-anchor
+    # The symbol used to make the permalink
+    permalinkSymbol: ¶

@@ -9,7 +9,7 @@ date: 2020-07-19 17:39:32
 在阅读MyBatis源码前，建议先去github上clone MyBatis以及MyBatis parent源码，在本地搭建测试环境，以供idea在源码中打断点调试。
 
 ---
-MyBatis一级缓存的核心逻辑位于**BaseExecutor**中
+MyBatis一级缓存的调用逻辑位于**BaseExecutor**中
 
 ### 存储结构
 ```java
@@ -147,7 +147,11 @@ public class CacheKey implements Cloneable, Serializable {
 1. **相同的方法（MappedStatement）**
 2. **相同sql，参数**
 3. **相同查询范围，即偏移量，limit**
-4. **相同的session**，此代码中未体现，但是localCache在BaseExecutor中，而BaseExecutor的创建是在初始化session时（入口是SqlSessionFactory.opensession，具体方法是Configuration.newExecutor）
+4. **相同的session**，此代码中未体现，但是localCache在BaseExecutor中，而BaseExecutor的创建是在初始化session时，调用栈信息如下图。
+
+![avatar](/images/mybatis/1_cache_invoke.png)
+
+
 
 ### 缓存清除条件
 PerpetualCache通过clear方法来清空缓存
