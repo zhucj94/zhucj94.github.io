@@ -129,7 +129,7 @@ SimpleExecutor的逻辑很简单，获取StatementHandler，每次都创建State
 ```
 
 #### ReuseExecutor
-ReuseExecutor与Simple的不同在于，当sql语句相同时，，**ReuseExecutor会重用Statement**
+ReuseExecutor与Simple的不同在于，当sql语句相同时，**ReuseExecutor会重用Statement**
 ```java
 private final Map<String, Statement> statementMap = new HashMap<>();
 ...
@@ -170,7 +170,7 @@ private Statement prepareStatement(StatementHandler handler, Log statementLog) t
 ...
 ```
 #### BatchExecutor
-BatchExecutor同样会重用Statment，且会批量提交
+BatchExecutor的update会重用Statment，**但重用条件比ReuseExecutor苛刻，不仅要求相同的sql，还要求相同MappedStatement（相同的方法），即使这两个都相同的情况下也不一定会重用，还要求两次调用间没有其他的调用**，且会批量提交。
 ```java
   public static final int BATCH_UPDATE_RETURN_VALUE = Integer.MIN_VALUE + 1002;
 
@@ -232,7 +232,7 @@ BatchExecutor同样会重用Statment，且会批量提交
 ```
 
 #### CachingExecutor
-CachingExecutor使用装饰模式，增强上述的Executor，二级缓存的调用逻辑也位于CachingExecutor中，关于二级缓存请看（ https://zhucj94.github.io/article/3f89eca3.html ）
+CachingExecutor使用装饰者模式，增强上述的Executor，二级缓存的调用逻辑也位于CachingExecutor中，关于二级缓存请看（ https://zhucj94.github.io/article/3f89eca3.html ）
 ```java
 // 被装饰的Executor
 private final Executor delegate;
