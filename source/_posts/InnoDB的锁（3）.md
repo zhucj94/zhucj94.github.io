@@ -5,7 +5,7 @@ declare: true
 abbrlink: 6f88bd9
 date: 2020-05-14 21:56:50
 ---
-InnoDB performs row-level locking in such a way that when it searches or scans a table index, it sets shared or exclusive locks on the index records it encounters. Thus, the row-level locks are actually index-record locks. (InnoDB执行行级锁方式是当它搜索或扫描表索引时，会在遇到的索引上加共享或排他锁，故行级锁实际上时索引记录锁)
+InnoDB performs row-level locking in such a way that when it searches or scans a table index, it sets shared or exclusive locks on the index records it encounters. Thus, the row-level locks are actually index-record locks. (InnoDB执行行级锁方式是当它搜索或扫描表索引时，会在遇到的索引上加共享或排他锁，故行级锁实际上是索引记录锁)
 
 ### 记录锁（Record Locks）
 + 定义
